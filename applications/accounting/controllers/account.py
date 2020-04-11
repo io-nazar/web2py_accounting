@@ -1,11 +1,15 @@
+from applications.accounting.models.io_gateway import IOGateway
+from applications.accounting.modules.accounting.accounting import Account
+
+
 def get_factory_form(ftype=None):
     if ftype == 'income' or ftype == 'outcome':
         form = SQLFORM.factory(
-            Field(fieldname='account_id',
+            Field(fieldname='account_name',
                   type='reference account',
                   requires=IS_IN_DB(db, 'account.id', '%(account_name)s'),
                   label='Account Name'),
-            Field(fieldname='income_sector_id',
+            Field(fieldname='income_sector_name',
                   type='reference sector',
                   requires=IS_IN_DB(db, 'sector.id', '%(sector_type)s'),
                   label='Sector Type'),
@@ -20,7 +24,7 @@ def get_factory_form(ftype=None):
 
     if ftype == 'balance':
         form = SQLFORM.factory(
-            Field(fieldname='account_id',
+            Field(fieldname='account_name',
                   type='reference account',
                   requires=IS_IN_DB(db, 'account.id', '%(account_name)s'),
                   label='Account Name'),
@@ -31,24 +35,37 @@ def get_factory_form(ftype=None):
         return form
 
     if ftype == 'account':
-        form = SQLFORM.factory(Field(fieldname='account_id',
+        form = SQLFORM.factory(Field(fieldname='account_name',
                                      type='reference account',
                                      requires=IS_NOT_EMPTY(),
                                      label='Account Name'))
         return form
 
     if ftype == 'sector':
-        form = SQLFORM.factory(Field(fieldname='sector_id',
+        form = SQLFORM.factory(Field(fieldname='sector_name',
                                      type='reference sector',
                                      requires=IS_NOT_EMPTY(),
                                      label='Sector Name'))
         return form
 
 
+def create_overview_table(query):
+    return SQLFORM.grid(query, showbuttontext=True, editable=True)
+
 
 def create_account():
+    account = Account()
+    gateway_io = IOGateway(db=db)
     account_form = get_factory_form(ftype='account')
-    account_form = process_form(form=account_form)
+    if account_form.process().accepted:
+        response.flash = 'New account record was sucessfuly added!'
+        account.account_name = account_form.vars.account_name
+        gateway_io.add_account(account=account)
+        db.commit()
+    elif account_form.errors:
+        response.flash = 'Error! Please fill all required fields'
+    view_table = create_overview_table(query=(db.account.id > 0))
+    account_form = account_form + view_table
     return dict(form=account_form)
 
 
@@ -77,7 +94,7 @@ def balance():
 
 def process_form(form):
     if form.process().accepted:
-        response.flash = 'New Record sucessfuly added!'
+        response.flash = 'New record was sucessfuly added!'
     elif form.errors:
         response.flash = 'Error! Please fill all required fields'
     return form
