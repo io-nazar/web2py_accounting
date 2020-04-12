@@ -5,11 +5,11 @@ from applications.accounting.modules.accounting.accounting import Account
 def get_factory_form(ftype=None):
     if ftype == 'income' or ftype == 'outcome':
         form = SQLFORM.factory(
-            Field(fieldname='account_name',
+            Field(fieldname='account_id',
                   type='reference account',
                   requires=IS_IN_DB(db, 'account.id', '%(account_name)s'),
                   label='Account Name'),
-            Field(fieldname='income_sector_name',
+            Field(fieldname='sector_type_id',
                   type='reference sector',
                   requires=IS_IN_DB(db, 'sector.id', '%(sector_type)s'),
                   label='Sector Type'),
@@ -18,7 +18,7 @@ def get_factory_form(ftype=None):
                   requires=IS_NOT_EMPTY()),
             Field(fieldname='amount',
                   type='double',
-                  requires=IS_NOT_EMPTY(),
+                  requires=IS_FLOAT_IN_RANGE(-1e100, 1e100),
                   label='Amount'))
         return form
 
@@ -86,9 +86,27 @@ def add_sector():
 
 
 def income():
+    account = Account()
+    gateway_io = IOGateway(db=db)
     income_form = get_factory_form(ftype='income')
-    income_form = process_form(form=income_form)
+    if income_form.process().accepted:
+        response.flash = get_msg(msg_type='success', msg_str='Income')
+        account = create_income(account=account, income_form=income_form)
+        gateway_io.add_income(account)
+        db.commit()
+    elif income_form.errors:
+        response.flash = get_msg(msg_type='error', msg_str='Income')
+    overview_table = create_overview_table(query=(db.income.id > 0))
+    income_form = income_form + overview_table
     return dict(form=income_form)
+
+
+def create_income(account, income_form):
+    account.account_id = income_form.vars.account_id
+    account.sector_type_id = income_form.vars.sector_type_id
+    account.creation_date = income_form.vars.income_date
+    account.amount = income_form.vars.amount
+    return account
 
 
 def outcome():

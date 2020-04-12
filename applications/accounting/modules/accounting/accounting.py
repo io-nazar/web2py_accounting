@@ -5,9 +5,12 @@ class Accounting:
 
 class Account(Accounting):
 
-    def __init__(self, account_name=None, sector_type=None, creation_date=None,
-                 amount=None):
+    def __init__(self, account_id=None, account_name=None, sector_id=None,
+                 sector_type=None, creation_date=None, amount=None):
+
+        self.account_id = account_id
         self._account_name = account_name
+        self.sector_type_id = sector_id
         self._sector_type = sector_type
         self._creation_date = creation_date
         self._amount = amount
@@ -44,7 +47,7 @@ class Account(Accounting):
 
     @property
     def amount(self):
-        return self.amount
+        return self._amount
 
     @amount.setter
     def amount(self, amount):

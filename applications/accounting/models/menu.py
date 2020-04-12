@@ -6,7 +6,6 @@ if not configuration.get('app.production'):
                                              'create_account')),
             (T('Add Sector'), False, URL('accounting', 'account',
                                          'add_sector'))]),
-        (T('Add Sector'), False, URL('accounting', 'account', 'add_sector')),
         (T('Income'), False, URL('accounting', 'account', 'income')),
         (T('Outcome'), False, URL('accounting', 'account', 'outcome')),
         (T('Balance'), False, URL('accounting', 'account', 'balance'))

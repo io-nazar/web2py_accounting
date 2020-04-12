@@ -8,13 +8,15 @@ db.define_table('sector',
 
 db.define_table('income',
                 Field(fieldname='account_id', type='reference account'),
-                Field(fieldname='income_sector', type='reference sector'),
+                Field(fieldname='income_sector_type_id',
+                      type='reference sector'),
                 Field(fieldname='income_date', type='datetime'),
                 Field(fieldname='amount', type='double'))
 
 db.define_table('outcome',
                 Field(fieldname='account_id', type='reference account'),
-                Field(fieldname='outcome_sector', type='reference sector'),
+                Field(fieldname='outcome_sector_type_id',
+                      type='reference sector'),
                 Field(fieldname='income_date', type='datetime'),
                 Field(fieldname='amount', type='double'))
 
