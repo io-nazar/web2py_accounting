@@ -58,12 +58,12 @@ def create_account():
     gateway_io = IOGateway(db=db)
     account_form = get_factory_form(ftype='account')
     if account_form.process().accepted:
-        response.flash = 'New account record was sucessfuly added!'
+        response.flash = get_msg(msg_type='succes', msg_str='Account')
         account.account_name = account_form.vars.account_name
         gateway_io.add_account(account=account)
         db.commit()
     elif account_form.errors:
-        response.flash = 'Error! Please fill all required fields'
+        response.flash = get_msg(msg_type='error', msg_str='Account')
     view_table = create_overview_table(query=(db.account.id > 0))
     account_form = account_form + view_table
     return dict(form=account_form)
@@ -100,3 +100,8 @@ def process_form(form):
     return form
 
 
+def get_msg(msg_type, msg_str):
+    if msg_type == 'sucess':
+        return '{} Success! New record was sucessfuly added!'.format(msg_str)
+    elif msg_type == 'error':
+        return '{} Error! Please fill all required fields'.format(msg_str)
