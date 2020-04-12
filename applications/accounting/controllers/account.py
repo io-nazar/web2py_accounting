@@ -91,8 +91,9 @@ def income():
     income_form = get_factory_form(ftype='income')
     if income_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Income')
-        account = create_income(account=account, income_form=income_form)
-        gateway_io.add_income(account)
+        account = create_income_outcome(account=account,
+                                        income_form=income_form)
+        gateway_io.add_income(account=account)
         db.commit()
     elif income_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Income')
@@ -101,7 +102,7 @@ def income():
     return dict(form=income_form)
 
 
-def create_income(account, income_form):
+def create_income_outcome(account, income_form):
     account.account_id = income_form.vars.account_id
     account.sector_type_id = income_form.vars.sector_type_id
     account.creation_date = income_form.vars.income_date
@@ -110,8 +111,19 @@ def create_income(account, income_form):
 
 
 def outcome():
+    account = Account()
+    gateway_io = IOGateway(db=db)
     outcome_form = get_factory_form(ftype='outcome')
-    outcome_form = process_form(form=outcome_form)
+    if outcome_form.process().accepted:
+        response.flash = get_msg(msg_type='success', msg_str='Outcome')
+        account = create_income_outcome(account=account,
+                                        income_form=outcome_form)
+        gateway_io.add_outcome(account=account)
+        db.commit()
+    elif outcome_form.errors:
+        response.flash = get_msg(msg_type='error', msg_str='Outcome')
+    overview_table = create_overview_table(query=(db.outcome.id > 0))
+    outcome_form = outcome_form + overview_table
     return dict(form=outcome_form)
 
 
