@@ -6,8 +6,8 @@ class IOGateway:
     def add_account(self, account):
         self.db.account.insert(account_name=account.account_name)
 
-    def add_sector(self):
-        pass
+    def add_sector(self, account):
+        self.db.sector.insert(sector_type=account.sector_type)
 
     def add_income(self):
         pass
