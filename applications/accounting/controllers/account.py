@@ -22,18 +22,6 @@ def get_factory_form(ftype=None):
                   label='Amount'))
         return form
 
-    if ftype == 'balance':
-        form = SQLFORM.factory(
-            Field(fieldname='account_name',
-                  type='reference account',
-                  requires=IS_IN_DB(db, 'account.id', '%(account_name)s'),
-                  label='Account Name'),
-            Field(fieldname='amount',
-                  type='double',
-                  requires=IS_NOT_EMPTY(),
-                  label='Amount'))
-        return form
-
     if ftype == 'account':
         form = SQLFORM.factory(Field(fieldname='account_name',
                                      type='reference account',
@@ -128,16 +116,8 @@ def outcome():
 
 
 def balance():
-    balance_form = get_factory_form(ftype='balance')
-    return dict(form=balance_form)
-
-
-def process_form(form):
-    if form.process().accepted:
-        response.flash = 'New record was sucessfuly added!'
-    elif form.errors:
-        response.flash = 'Error! Please fill all required fields'
-    return form
+    overview_table = create_overview_table(query=(db.balance.id > 0))
+    return dict(form=overview_table)
 
 
 def get_msg(msg_type, msg_str):

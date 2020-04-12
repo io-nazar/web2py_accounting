@@ -21,6 +21,3 @@ class IOGateway:
                                income_date=account.creation_date,
                                amount=account.amount)
 
-    def add_balance(self):
-        pass
-
