@@ -1,5 +1,4 @@
 # Simple Accounting 
-Repository for web2py accounting applications code  
 
 * Simple accounting App based on Web2py Framework.
 
