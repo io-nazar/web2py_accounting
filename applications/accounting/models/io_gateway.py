@@ -11,13 +11,13 @@ class IOGateway:
 
     def add_income(self, account):
         self.db.income.insert(account_id=account.account_id,
-                              income_sector_type_id=account.sector_type_id,
+                              sector_type_id=account.sector_type_id,
                               income_date=account.creation_date,
                               amount=account.amount)
 
     def add_outcome(self, account):
         self.db.outcome.insert(account_id=account.account_id,
-                               outcome_sector_type_id=account.sector_type_id,
+                               sector_type_id=account.sector_type_id,
                                income_date=account.creation_date,
                                amount=account.amount)
 
