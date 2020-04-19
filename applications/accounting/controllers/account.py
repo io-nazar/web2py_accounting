@@ -113,6 +113,7 @@ def create_income_outcome(account, income_form):
     return account
 
 
+@auth.requires_login()
 def outcome():
     account = Account()
     gateway_io = IOGateway(db=db)
@@ -125,7 +126,9 @@ def outcome():
         db.commit()
     elif outcome_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Outcome')
-    overview_table = create_overview_table(query=(db.outcome.id > 0))
+    overview_table = SQLFORM.grid(db.outcome, left=db.outcome.on(
+                                 (db.outcome.created_by == db.auth_user.id) &
+                                 (db.auth_user.id == USER_ID)))
     outcome_form = outcome_form + overview_table
     return dict(form=outcome_form)
 
