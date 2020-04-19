@@ -83,6 +83,7 @@ def add_sector():
     sector_form = sector_form + overview_table
     return dict(form=sector_form)
 
+@auth.requires_login()
 def income():
     account = Account()
     gateway_io = IOGateway(db=db)
@@ -95,7 +96,11 @@ def income():
         db.commit()
     elif income_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Income')
-    overview_table = create_overview_table(query=(db.income.id > 0))
+
+    overview_table = SQLFORM.grid(db.income, left=db.income.on(
+                                 (db.income.created_by == db.auth_user.id) &
+                                 (db.auth_user.id == USER_ID)))
+
     income_form = income_form + overview_table
     return dict(form=income_form)
 
