@@ -1,7 +1,12 @@
-from applications.accounting.models.io_gateway import IOGateway
+from applications.accounting.modules.gateway.io_gateway import IOGateway
 from applications.accounting.modules.accounting.accounting import Account
+import logging
+logger = logging.getLogger('web2py.app.accounting')
+logger.setLevel(logging.DEBUG)
+USER_ID = auth.user.id
 
 
+@auth.requires_login()
 def get_factory_form(ftype=None):
     if ftype == 'income' or ftype == 'outcome':
         form = SQLFORM.factory(
@@ -41,6 +46,7 @@ def create_overview_table(query):
     return SQLFORM.grid(query, showbuttontext=True, editable=True)
 
 
+@auth.requires_login()
 def create_account():
     account = Account()
     gateway_io = IOGateway(db=db)
@@ -52,7 +58,9 @@ def create_account():
         db.commit()
     elif account_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Account')
-    overview_table = create_overview_table(query=(db.account.id > 0))
+    overview_table = SQLFORM.grid(db.account, left=db.account.on(
+                                 (db.account.created_by == db.auth_user.id) &
+                                 (db.auth_user.id == USER_ID)))
     account_form = account_form + overview_table
     return dict(form=account_form)
 
