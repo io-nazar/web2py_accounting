@@ -69,7 +69,7 @@ class Account(Accounting):
 
     @property
     def amount(self):
-        return self._amount
+        return round(self._amount, 2)
 
     @amount.setter
     def amount(self, amount):
@@ -79,7 +79,7 @@ class Account(Accounting):
 
     @property
     def total_balance(self):
-        return self._total_balance
+        return round(self._total_balance, 2)
 
     @total_balance.setter
     def total_balance(self, total_balance):
@@ -99,4 +99,4 @@ class Account(Accounting):
         totalized_amount = 0.0
         for amount in amounts:
             totalized_amount += amount
-        return totalized_amount
+        return round(totalized_amount, 2)
