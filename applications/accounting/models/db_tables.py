@@ -21,7 +21,7 @@ db.define_table('income',
                 Field(fieldname='amount', type='double'),
                 auth.signature)
 
-db.define_table('outcome',
+db.define_table('outgoing',
                 Field(fieldname='account_id', type='reference account'),
                 Field(fieldname='sector_type_id',
                       type='reference sector'),

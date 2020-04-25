@@ -31,7 +31,7 @@ class InsertTestData:
                              income_date=datetime.today(),
                              amount=1000.3)])
 
-        self.db.outcome.bulk_insert([
+        self.db.outgoing.bulk_insert([
                         dict(account_id=accounts_ids[0],
                              sector_type_id=sectors_ids[0],
                              income_date=datetime.today(),

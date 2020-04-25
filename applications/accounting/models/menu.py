@@ -7,7 +7,7 @@ if not configuration.get('app.production'):
             (T('Add Sector'), False, URL('accounting', 'account',
                                          'add_sector'))]),
         (T('Income'), False, URL('accounting', 'account', 'income')),
-        (T('Outcome'), False, URL('accounting', 'account', 'outcome')),
+        (T('Outgoing'), False, URL('accounting', 'account', 'outgoing')),
         (T('Balance'), False, URL('accounting', 'account', 'balance')),
         (T('Dev Tools'), False, '#', [
             (T('Insert Test Data'), False, URL('accounting', 'dev_tools',
@@ -22,7 +22,7 @@ if configuration.get('app.production'):
             (T('Add Sector'), False, URL('accounting', 'account',
                                          'add_sector'))]),
         (T('Income'), False, URL('accounting', 'account', 'income')),
-        (T('Outcome'), False, URL('accounting', 'account', 'outcome')),
+        (T('Outgoing'), False, URL('accounting', 'account', 'outgoing')),
         (T('Balance'), False, URL('accounting', 'account', 'balance'))
     ]
 

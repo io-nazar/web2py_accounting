@@ -8,7 +8,7 @@ USER_ID = auth.user.id
 
 @auth.requires_login()
 def get_factory_form(ftype=None):
-    if ftype == 'income' or ftype == 'outcome':
+    if ftype == 'income' or ftype == 'outgoing':
         form = SQLFORM.factory(
             Field(fieldname='account_id',
                   type='reference account',
@@ -91,8 +91,8 @@ def income():
     income_form = get_factory_form(ftype='income')
     if income_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Income')
-        account = create_income_outcome(account=account,
-                                        income_form=income_form)
+        account = create_income_outgoing(account=account,
+                                         income_form=income_form)
         gateway_io.add_income(account=account)
         db.commit()
     elif income_form.errors:
@@ -106,7 +106,7 @@ def income():
     return dict(form=income_form)
 
 
-def create_income_outcome(account, income_form):
+def create_income_outgoing(account, income_form):
     account.account_id = income_form.vars.account_id
     account.sector_type_id = income_form.vars.sector_type_id
     account.creation_date = income_form.vars.income_date
@@ -115,23 +115,23 @@ def create_income_outcome(account, income_form):
 
 
 @auth.requires_login()
-def outcome():
+def outgoing():
     account = Account()
     gateway_io = IOGateway(db=db)
-    outcome_form = get_factory_form(ftype='outcome')
-    if outcome_form.process().accepted:
-        response.flash = get_msg(msg_type='success', msg_str='Outcome')
-        account = create_income_outcome(account=account,
-                                        income_form=outcome_form)
-        gateway_io.add_outcome(account=account)
+    outgoing_form = get_factory_form(ftype='outgoing')
+    if outgoing_form.process().accepted:
+        response.flash = get_msg(msg_type='success', msg_str='Outgoing')
+        account = create_income_outgoing(account=account,
+                                         income_form=outgoing_form)
+        gateway_io.add_outgoing(account=account)
         db.commit()
-    elif outcome_form.errors:
-        response.flash = get_msg(msg_type='error', msg_str='Outcome')
-    overview_table = SQLFORM.grid(db.outcome, left=db.outcome.on(
-                                 (db.outcome.created_by == db.auth_user.id) &
+    elif outgoing_form.errors:
+        response.flash = get_msg(msg_type='error', msg_str='Outgoing')
+    overview_table = SQLFORM.grid(db.outgoing, left=db.outgoing.on(
+                                 (db.outgoing.created_by == db.auth_user.id) &
                                  (db.auth_user.id == USER_ID)))
-    outcome_form = outcome_form + overview_table
-    return dict(form=outcome_form)
+    outgoing_form = outgoing_form + overview_table
+    return dict(form=outgoing_form)
 
 
 @auth.requires_login()
@@ -139,17 +139,18 @@ def balance():
     account = Account()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
 
-    outcomes = gateway_io.get_outcome()
-    outcomes_amount = account.extract_amount(values=outcomes, key='amount')
-    tot_outcomes_amount = account.sum_up_amount(amounts=outcomes_amount)
-    logger.debug('balance > total outcome amount: {}'.format(tot_outcomes_amount))
+    outgoing = gateway_io.get_outgoing()
+    outgoing_amount = account.extract_amount(values=outgoing, key='amount')
+    tot_outgoing_amount = account.sum_up_amount(amounts=outgoing_amount)
+    logger.debug('balance > total outgoing amount: {}'.
+                 format(tot_outgoing_amount))
 
     incomes = gateway_io.get_income()
     incomes_amount = account.extract_amount(values=incomes, key='amount')
     tot_income_amount = account.sum_up_amount(amounts=incomes_amount)
     logger.debug('balance > total income amount: {}'.format(tot_income_amount))
 
-    total_balance = tot_income_amount-tot_outcomes_amount
+    total_balance = tot_income_amount - tot_outgoing_amount
     account.total_balance = total_balance
     logger.debug('balance > total balance: {}'.format(account.total_balance))
 

@@ -25,19 +25,19 @@ class IOGateway:
             incomes.append(dict(amount=income_row['income'].amount))
         return incomes
 
-    def add_outcome(self, account):
-        self._db.outcome.insert(account_id=account.account_id,
+    def add_outgoing(self, account):
+        self._db.outgoing.insert(account_id=account.account_id,
                                 sector_type_id=account.sector_type_id,
                                 income_date=account.creation_date,
                                 amount=account.amount)
 
-    def get_outcome(self):
-        query = ((self._db.outcome.created_by == self._db.auth_user.id) &
+    def get_outgoing(self):
+        query = ((self._db.outgoing.created_by == self._db.auth_user.id) &
                  (self._db.auth_user.id == self._user_id))
-        outcome_rows = self._db(query=query).select()
+        outgoing_rows = self._db(query=query).select()
 
-        outcomes = []
-        for outcome_row in outcome_rows:
-            outcomes.append(dict(amount=outcome_row['outcome'].amount))
-        return outcomes
+        outgoing = []
+        for outgoing_row in outgoing_rows:
+            outgoing.append(dict(amount=outgoing_row['outgoing'].amount))
+        return outgoing
 
