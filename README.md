@@ -2,11 +2,11 @@
 
 * The author publishes this code purely for educational / exercise purposes
 * Author allows viewing and reviewing his code
-* Author forbids any commercial/private use of his code.(write your own solution)
+* Author forbids any commercial/private use of his code (write your own solution)
 
 
 # Simple Accounting
-* With the help of this accounting application user has possibility to manage his budget.
+* With the help of this accounting application user has possibility to manage his budget / finances.
 
 
 # Educational goal:
@@ -15,14 +15,18 @@
  * learn how to structure code in a modular way combining with OOP technics
 
 # Focus on:
- * good creation of quality code by following 80/20 rule
+ * creation of good quality code by following 80/20 rule
  * code which is not understandable, should be refactored until is understandable
  * solve problem by produsing less code as possible
 
-* Simple accounting App based on Web2py Framework.
 
-* Author creates this application only for educational purposes.
-
+# Requirements:
+Create simple accounting application for managing incoming and outgoing finances.
+The base structure should consist of incoming, outgoing and balance parts.
+* Incoming: In the incoming part user has possibility to enter and view required data.
+* Outgoing: In the incoming part user has possibility to enter and view required data.
+* Balance: In the balance part should view difference of total amount between incoming and outgoing parts.
+  balance = SUM(incoming amount) – SUM(outgoing amount)
 
 # Dependencies
   * web2py web framework (used python 3.6)
