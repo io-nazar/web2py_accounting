@@ -79,7 +79,7 @@ class Account(Accounting):
 
     @property
     def total_balance(self):
-        return self._balance
+        return self._total_balance
 
     @total_balance.setter
     def total_balance(self, total_balance):

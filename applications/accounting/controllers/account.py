@@ -83,6 +83,7 @@ def add_sector():
     sector_form = sector_form + overview_table
     return dict(form=sector_form)
 
+
 @auth.requires_login()
 def income():
     account = Account()
@@ -133,11 +134,29 @@ def outcome():
     return dict(form=outcome_form)
 
 
+@auth.requires_login()
 def balance():
-    overview_table = create_overview_table(query=(db.balance.id > 0))
-    return dict(form=overview_table)
+    account = Account()
+    gateway_io = IOGateway(db=db, user_id=USER_ID)
+
+    outcomes = gateway_io.get_outcome()
+    outcomes_amount = account.extract_amount(values=outcomes, key='amount')
+    tot_outcomes_amount = account.sum_up_amount(amounts=outcomes_amount)
+    logger.debug('balance > total outcome amount: {}'.format(tot_outcomes_amount))
+
+    incomes = gateway_io.get_income()
+    incomes_amount = account.extract_amount(values=incomes, key='amount')
+    tot_income_amount = account.sum_up_amount(amounts=incomes_amount)
+    logger.debug('balance > total income amount: {}'.format(tot_income_amount))
+
+    total_balance = tot_income_amount-tot_outcomes_amount
+    account.total_balance = total_balance
+    logger.debug('balance > total balance: {}'.format(account.total_balance))
+
+    return dict(form=dict(balance=total_balance))
 
 
+@auth.requires_login()
 def get_msg(msg_type, msg_str):
     if msg_type == 'success':
         return '{} Success! New record was sucessfuly added!'.format(msg_str)
