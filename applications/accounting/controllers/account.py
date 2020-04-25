@@ -42,10 +42,6 @@ def get_factory_form(ftype=None):
         return form
 
 
-def create_overview_table(query):
-    return SQLFORM.grid(query, showbuttontext=True, editable=True)
-
-
 @auth.requires_login()
 def create_account():
     account = Account()
@@ -60,7 +56,8 @@ def create_account():
         response.flash = get_msg(msg_type='error', msg_str='Account')
     overview_table = SQLFORM.grid(db.account, left=db.account.on(
                                  (db.account.created_by == db.auth_user.id) &
-                                 (db.auth_user.id == USER_ID)))
+                                 (db.auth_user.id == USER_ID)),
+                                 create=False)
     account_form = account_form + overview_table
     return dict(form=account_form)
 
@@ -77,9 +74,10 @@ def add_sector():
         db.commit()
     elif sector_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Sector')
-    overview_table = SQLFORM.grid(db.sector, left=db.sector.on(
+    overview_table = SQLFORM.grid(query=db.sector, left=db.sector.on(
                                  (db.sector.created_by == db.auth_user.id) &
-                                 (db.auth_user.id == USER_ID)))
+                                 (db.auth_user.id == USER_ID)),
+                                 create=False)
     sector_form = sector_form + overview_table
     return dict(form=sector_form)
 
@@ -98,9 +96,10 @@ def income():
     elif income_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Income')
 
-    overview_table = SQLFORM.grid(db.income, left=db.income.on(
-                                 (db.income.created_by == db.auth_user.id) &
-                                 (db.auth_user.id == USER_ID)))
+    overview_table = SQLFORM.grid(query=db.income, left=db.income.on(
+                                    (db.income.created_by == db.auth_user.id) &
+                                    (db.auth_user.id == USER_ID)),
+                                  create=False)
 
     income_form = income_form + overview_table
     return dict(form=income_form)
@@ -127,9 +126,10 @@ def outgoing():
         db.commit()
     elif outgoing_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Outgoing')
-    overview_table = SQLFORM.grid(db.outgoing, left=db.outgoing.on(
+    overview_table = SQLFORM.grid(query=db.outgoing, left=db.outgoing.on(
                                  (db.outgoing.created_by == db.auth_user.id) &
-                                 (db.auth_user.id == USER_ID)))
+                                 (db.auth_user.id == USER_ID)),
+                                 create=False)
     outgoing_form = outgoing_form + overview_table
     return dict(form=outgoing_form)
 
