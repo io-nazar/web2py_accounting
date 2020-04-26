@@ -20,7 +20,8 @@ db.define_table('income',
                 Field(fieldname='income_date', type='datetime'),
                 Field(fieldname='amount', type='double'),
                 Field(fieldname='comment_field', type='text', label='Comment'),
-                auth.signature)
+                auth.signature,
+                format='%(amount)s')
 
 db.define_table('outgoing',
                 Field(fieldname='account_id', type='reference account'),
@@ -29,11 +30,13 @@ db.define_table('outgoing',
                 Field(fieldname='income_date', type='datetime'),
                 Field(fieldname='amount', type='double'),
                 Field(fieldname='comment_field', type='text', label='Comment'),
-                auth.signature)
+                auth.signature,
+                format='%(amount)s')
 
 db.define_table('balance',
                 Field(fieldname='account_id', type='reference account'),
                 Field(fieldname='amount', type='double', readable=True,
                       writable=True),
-                auth.signature)
+                auth.signature,
+                format='%(amount)s')
 
