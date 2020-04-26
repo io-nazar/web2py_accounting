@@ -19,6 +19,7 @@ db.define_table('income',
                       type='reference sector'),
                 Field(fieldname='income_date', type='datetime'),
                 Field(fieldname='amount', type='double'),
+                Field(fieldname='comment_field', type='text', label='Comment'),
                 auth.signature)
 
 db.define_table('outgoing',
@@ -27,6 +28,7 @@ db.define_table('outgoing',
                       type='reference sector'),
                 Field(fieldname='income_date', type='datetime'),
                 Field(fieldname='amount', type='double'),
+                Field(fieldname='comment_field', type='text', label='Comment'),
                 auth.signature)
 
 db.define_table('balance',
