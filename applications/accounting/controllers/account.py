@@ -57,7 +57,7 @@ def create_account():
     overview_table = SQLFORM.grid(db.account, left=db.account.on(
                                  (db.account.created_by == db.auth_user.id) &
                                  (db.auth_user.id == USER_ID)),
-                                 create=False)
+                                 create=False, details=False)
     account_form = account_form + overview_table
     return dict(form=account_form)
 
@@ -77,7 +77,7 @@ def add_sector():
     overview_table = SQLFORM.grid(query=db.sector, left=db.sector.on(
                                  (db.sector.created_by == db.auth_user.id) &
                                  (db.auth_user.id == USER_ID)),
-                                 create=False)
+                                 create=False, details=False)
     sector_form = sector_form + overview_table
     return dict(form=sector_form)
 
@@ -99,7 +99,7 @@ def income():
     overview_table = SQLFORM.grid(query=db.income, left=db.income.on(
                                     (db.income.created_by == db.auth_user.id) &
                                     (db.auth_user.id == USER_ID)),
-                                  create=False)
+                                  create=False, details=False)
 
     income_form = income_form + overview_table
     return dict(form=income_form)
@@ -129,7 +129,7 @@ def outgoing():
     overview_table = SQLFORM.grid(query=db.outgoing, left=db.outgoing.on(
                                  (db.outgoing.created_by == db.auth_user.id) &
                                  (db.auth_user.id == USER_ID)),
-                                 create=False)
+                                 create=False, details=False)
     outgoing_form = outgoing_form + overview_table
     return dict(form=outgoing_form)
 
