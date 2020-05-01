@@ -5,14 +5,14 @@ class Accounting:
 
 class Account(Accounting):
 
-    def __init__(self, account_id=None, account_name=None, sector_id=None,
-                 sector_type=None, creation_date=None, amount=None,
+    def __init__(self, account_id=None, account_name=None, category_id=None,
+                 category=None, creation_date=None, amount=None,
                  total_balance=None):
 
         self._account_id = account_id
         self._account_name = account_name
-        self._sector_type_id = sector_id
-        self._sector_type = sector_type
+        self._category_id = category_id
+        self._category = category
         self._creation_date = creation_date
         self._amount = amount
         self._total_balance = total_balance
@@ -38,24 +38,24 @@ class Account(Accounting):
         self._account_name = account_name
 
     @property
-    def sector_type_id(self):
-        return self._sector_type_id
+    def category_id(self):
+        return self._category_id
 
-    @sector_type_id.setter
-    def sector_type_id(self, sector_type_id):
-        if not sector_type_id:
-            raise ValueError('Error! sector_type_id')
-        self._sector_type_id = sector_type_id
+    @category_id.setter
+    def category_id(self, category_id):
+        if not category_id:
+            raise ValueError('Error! category_id')
+        self._category_id = category_id
 
     @property
-    def sector_type(self):
-        return self._sector_type
+    def category(self):
+        return self._category
 
-    @sector_type.setter
-    def sector_type(self, sector_type):
-        if not sector_type:
-            raise ValueError('Error! sector_type')
-        self._sector_type = sector_type
+    @category.setter
+    def category(self, category):
+        if not category:
+            raise ValueError('Error! category')
+        self._category = category
 
     @property
     def creation_date(self):

@@ -7,12 +7,12 @@ class IOGateway:
     def add_account(self, account):
         self._db.account.insert(account_name=account.account_name)
 
-    def add_sector(self, account):
-        self._db.sector.insert(sector_type=account.sector_type)
+    def add_category(self, account):
+        self._db.category.insert(category=account.category)
 
     def add_income(self, account):
         self._db.income.insert(account_id=account.account_id,
-                               sector_type_id=account.sector_type_id,
+                               category_id=account.category_id,
                                income_date=account.creation_date,
                                amount=account.amount)
 
@@ -27,9 +27,9 @@ class IOGateway:
 
     def add_outgoing(self, account):
         self._db.outgoing.insert(account_id=account.account_id,
-                                sector_type_id=account.sector_type_id,
-                                income_date=account.creation_date,
-                                amount=account.amount)
+                                 category_id=account.category_id,
+                                 income_date=account.creation_date,
+                                 amount=account.amount)
 
     def get_outgoing(self):
         query = ((self._db.outgoing.created_by == self._db.auth_user.id) &

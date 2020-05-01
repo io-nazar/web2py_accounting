@@ -4,8 +4,8 @@ if not configuration.get('app.production'):
         (T('Manage Account'), False, '#', [
             (T('Create Account'), False, URL('accounting', 'account',
                                              'create_account')),
-            (T('Add Sector'), False, URL('accounting', 'account',
-                                         'add_sector'))]),
+            (T('Add Category'), False, URL('accounting', 'account',
+                                           'add_category'))]),
         (T('Income'), False, URL('accounting', 'account', 'income')),
         (T('Outgoing'), False, URL('accounting', 'account', 'outgoing')),
         (T('Balance'), False, URL('accounting', 'account', 'balance')),
@@ -19,8 +19,8 @@ if configuration.get('app.production'):
         (T('Manage Account'), False, '#', [
             (T('Create Account'), False, URL('accounting', 'account',
                                              'create_account')),
-            (T('Add Sector'), False, URL('accounting', 'account',
-                                         'add_sector'))]),
+            (T('Add Category'), False, URL('accounting', 'account',
+                                           'add_category'))]),
         (T('Income'), False, URL('accounting', 'account', 'income')),
         (T('Outgoing'), False, URL('accounting', 'account', 'outgoing')),
         (T('Balance'), False, URL('accounting', 'account', 'balance'))

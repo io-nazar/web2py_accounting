@@ -14,10 +14,10 @@ def get_factory_form(ftype=None):
                   type='reference account',
                   requires=IS_IN_DB(db, 'account.id', '%(account_name)s'),
                   label='Account Name'),
-            Field(fieldname='sector_type_id',
-                  type='reference sector',
-                  requires=IS_IN_DB(db, 'sector.id', '%(sector_type)s'),
-                  label='Sector Type'),
+            Field(fieldname='category_id',
+                  type='reference category',
+                  requires=IS_IN_DB(db, 'category.id', '%(category)s'),
+                  label='Category'),
             Field(fieldname='income_date',
                   type='datetime',
                   requires=IS_NOT_EMPTY()),
@@ -34,11 +34,11 @@ def get_factory_form(ftype=None):
                                      label='Account Name'))
         return form
 
-    if ftype == 'sector':
-        form = SQLFORM.factory(Field(fieldname='sector_type',
-                                     type='reference sector',
+    if ftype == 'category':
+        form = SQLFORM.factory(Field(fieldname='category',
+                                     type='reference category',
                                      requires=IS_NOT_EMPTY(),
-                                     label='Sector Type'))
+                                     label='Category'))
         return form
 
 
@@ -63,23 +63,23 @@ def create_account():
 
 
 @auth.requires_login()
-def add_sector():
+def add_category():
     account = Account()
     gateway_io = IOGateway(db=db)
-    sector_form = get_factory_form(ftype='sector')
-    if sector_form.process().accepted:
-        response.flash = get_msg(msg_type='success', msg_str='Sector')
-        account.sector_type = sector_form.vars.sector_type
-        gateway_io.add_sector(account=account)
+    category_form = get_factory_form(ftype='category')
+    if category_form.process().accepted:
+        response.flash = get_msg(msg_type='success', msg_str='Category')
+        account.category = category_form.vars.category
+        gateway_io.add_category(account=account)
         db.commit()
-    elif sector_form.errors:
-        response.flash = get_msg(msg_type='error', msg_str='Sector')
-    overview_table = SQLFORM.grid(query=db.sector, left=db.sector.on(
-                                 (db.sector.created_by == db.auth_user.id) &
+    elif category_form.errors:
+        response.flash = get_msg(msg_type='error', msg_str='Category')
+    overview_table = SQLFORM.grid(query=db.category, left=db.category.on(
+                                 (db.category.created_by == db.auth_user.id) &
                                  (db.auth_user.id == USER_ID)),
                                  create=False, details=False)
-    sector_form = sector_form + overview_table
-    return dict(form=sector_form)
+    category_form = category_form + overview_table
+    return dict(form=category_form)
 
 
 @auth.requires_login()
@@ -107,7 +107,7 @@ def income():
 
 def create_income_outgoing(account, income_form):
     account.account_id = income_form.vars.account_id
-    account.sector_type_id = income_form.vars.sector_type_id
+    account.category_id = income_form.vars.category_id
     account.creation_date = income_form.vars.income_date
     account.amount = income_form.vars.amount
     return account
