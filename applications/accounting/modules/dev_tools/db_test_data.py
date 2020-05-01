@@ -34,15 +34,15 @@ class InsertTestData:
         self.db.outgoing.bulk_insert([
                         dict(account_id=accounts_ids[0],
                              category_id=category_ids[0],
-                             income_date=datetime.today(),
+                             outgoing_date=datetime.today(),
                              amount=10.0),
                         dict(account_id=accounts_ids[1],
                              category_id=category_ids[1],
-                             income_date=datetime.today(),
+                             outgoing_date=datetime.today(),
                              amount=100.0),
                         dict(account_id=accounts_ids[2],
                              category_id=category_ids[2],
-                             income_date=datetime.today(),
+                             outgoing_date=datetime.today(),
                              amount=1000.0)])
 
     def start_insertion(self):
