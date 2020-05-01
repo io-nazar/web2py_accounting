@@ -151,6 +151,7 @@ def balance():
     logger.debug('balance > total income amount: {}'.format(tot_income_amount))
 
     total_balance = tot_income_amount - tot_outgoing_amount
+    total_balance = round(total_balance, 2)
     account.total_balance = total_balance
     logger.debug('balance > total balance: {}'.format(account.total_balance))
 
