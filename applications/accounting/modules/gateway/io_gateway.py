@@ -29,7 +29,7 @@ class IOGateway:
     def add_outgoing(self, account):
         self._db.outgoing.insert(account_id=account.account_id,
                                  category_id=account.category_id,
-                                 income_date=account.creation_date,
+                                 outgoing_date=account.creation_date,
                                  amount=account.amount,
                                  comment_field=account.comment)
 
