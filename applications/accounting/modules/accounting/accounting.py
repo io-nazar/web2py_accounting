@@ -7,7 +7,7 @@ class Account(Accounting):
 
     def __init__(self, account_id=None, account_name=None, category_id=None,
                  category=None, creation_date=None, amount=None,
-                 total_balance=None):
+                 total_balance=None, comment=None):
 
         self._account_id = account_id
         self._account_name = account_name
@@ -16,6 +16,7 @@ class Account(Accounting):
         self._creation_date = creation_date
         self._amount = amount
         self._total_balance = total_balance
+        self._comment = comment
 
     @property
     def account_id(self):
@@ -84,8 +85,16 @@ class Account(Accounting):
     @total_balance.setter
     def total_balance(self, total_balance):
         if not total_balance:
-            raise ValueError('Error!', total_balance)
+            raise ValueError('Error! total_amount', total_balance)
         self._total_balance = total_balance
+
+    @property
+    def comment(self):
+        return self._comment
+
+    @comment.setter
+    def comment(self, comment):
+        self._comment = comment
 
     @staticmethod
     def extract_amount(values, key):

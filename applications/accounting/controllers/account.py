@@ -24,7 +24,10 @@ def get_factory_form(ftype=None):
             Field(fieldname='amount',
                   type='double',
                   requires=IS_FLOAT_IN_RANGE(-1e100, 1e100),
-                  label='Amount'))
+                  label='Amount'),
+            Field(fieldname='comment_field',
+                  type='text',
+                  label='Comment'))
         return form
 
     if ftype == 'account':
@@ -90,7 +93,7 @@ def income():
     if income_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Income')
         account = create_income_outgoing(account=account,
-                                         income_form=income_form)
+                                         income_outgoing_form=income_form)
         gateway_io.add_income(account=account)
         db.commit()
     elif income_form.errors:
@@ -105,11 +108,12 @@ def income():
     return dict(form=income_form)
 
 
-def create_income_outgoing(account, income_form):
-    account.account_id = income_form.vars.account_id
-    account.category_id = income_form.vars.category_id
-    account.creation_date = income_form.vars.income_date
-    account.amount = income_form.vars.amount
+def create_income_outgoing(account, income_outgoing_form):
+    account.account_id = income_outgoing_form.vars.account_id
+    account.category_id = income_outgoing_form.vars.category_id
+    account.creation_date = income_outgoing_form.vars.income_date
+    account.amount = income_outgoing_form.vars.amount
+    account.comment = income_outgoing_form.vars.comment_field
     return account
 
 
@@ -121,7 +125,7 @@ def outgoing():
     if outgoing_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Outgoing')
         account = create_income_outgoing(account=account,
-                                         income_form=outgoing_form)
+                                         income_outgoing_form=outgoing_form)
         gateway_io.add_outgoing(account=account)
         db.commit()
     elif outgoing_form.errors:

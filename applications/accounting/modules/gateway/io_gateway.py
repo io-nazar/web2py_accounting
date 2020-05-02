@@ -14,7 +14,8 @@ class IOGateway:
         self._db.income.insert(account_id=account.account_id,
                                category_id=account.category_id,
                                income_date=account.creation_date,
-                               amount=account.amount)
+                               amount=account.amount,
+                               comment_field=account.comment)
 
     def get_income(self):
         query = ((self._db.income.created_by == self._db.auth_user.id) &
@@ -29,7 +30,8 @@ class IOGateway:
         self._db.outgoing.insert(account_id=account.account_id,
                                  category_id=account.category_id,
                                  income_date=account.creation_date,
-                                 amount=account.amount)
+                                 amount=account.amount,
+                                 comment_field=account.comment)
 
     def get_outgoing(self):
         query = ((self._db.outgoing.created_by == self._db.auth_user.id) &
