@@ -26,7 +26,7 @@ def get_factory_form(ftype=None):
                   requires=IS_FLOAT_IN_RANGE(-1e100, 1e100),
                   label='Amount'),
             Field(fieldname='comment_field',
-                  type='text',
+                  type='string',
                   label='Comment'))
         return form
 
@@ -60,7 +60,7 @@ def create_account():
     overview_table = SQLFORM.grid(db.account, left=db.account.on(
                                  (db.account.created_by == db.auth_user.id) &
                                  (db.auth_user.id == USER_ID)),
-                                 create=False, details=False, csv=False)
+                                  create=False, details=False, csv=False)
     account_form = account_form + overview_table
     return dict(form=account_form)
 

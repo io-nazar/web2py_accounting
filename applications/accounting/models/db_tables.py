@@ -24,7 +24,8 @@ db.define_table('income',
                       requires=IS_NOT_EMPTY(), label='Date'),
                 Field(fieldname='amount', type='double',
                       requires=IS_NOT_EMPTY(), label='Amount'),
-                Field(fieldname='comment_field', type='text', label='Comment'),
+                Field(fieldname='comment_field', type='string',
+                      label='Comment'),
                 auth.signature,
                 format='%(amount)s')
 
@@ -37,7 +38,7 @@ db.define_table('outgoing',
                       requires=IS_NOT_EMPTY(), label='Date'),
                 Field(fieldname='amount', type='double',
                       requires=IS_NOT_EMPTY(), label='Amount'),
-                Field(fieldname='comment_field', type='text',
+                Field(fieldname='comment_field', type='string',
                       requires=IS_NOT_EMPTY(), label='Comment'),
                 auth.signature,
                 format='%(amount)s')
