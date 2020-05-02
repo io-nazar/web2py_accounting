@@ -8,14 +8,15 @@ class InsertTestData:
 
     def _load_test_data(self):
         accounts_ids = self.db.account.bulk_insert([
-                        dict(account_name='Household'),
-                        dict(account_name='private account 1'),
-                        dict(account_name='private account 2')])
+                        dict(account_name='Work'),
+                        dict(account_name='Stocks'),
+                        dict(account_name='Household')])
 
         category_ids = self.db.category.bulk_insert([
                         dict(category='Salary'),
-                        dict(category='Sponsorship'),
-                        dict(category='Some Category')])
+                        dict(category='Dividend'),
+                        dict(category='Other'),
+        ])
 
         self.db.income.bulk_insert([
                         dict(account_id=accounts_ids[0],
@@ -35,15 +36,15 @@ class InsertTestData:
                         dict(account_id=accounts_ids[0],
                              category_id=category_ids[0],
                              outgoing_date=datetime.today(),
-                             amount=10.0),
+                             amount=5.0),
                         dict(account_id=accounts_ids[1],
                              category_id=category_ids[1],
                              outgoing_date=datetime.today(),
-                             amount=100.0),
+                             amount=50.0),
                         dict(account_id=accounts_ids[2],
                              category_id=category_ids[2],
                              outgoing_date=datetime.today(),
-                             amount=1000.0)])
+                             amount=500.0)])
 
     def start_insertion(self):
         self._load_test_data()
