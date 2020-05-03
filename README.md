@@ -3,9 +3,9 @@
 
 
 Images
-![image](applications/accounting/images/income.jpeg)
-![image](applications/accounting/images/outgoing.jpeg)
-![image](applications/accounting/images/balance.jpeg)
+![image](applications/accounting/images/income.jpg)
+![image](applications/accounting/images/outgoing.jpg)
+![image](applications/accounting/images/balance.jpg)
 
 # Educational goal
  * learn how to write quick code solutions by  using agile principles (eXtreme programming)
