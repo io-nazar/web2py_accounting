@@ -57,9 +57,10 @@ def create_account():
         db.commit()
     elif account_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Account')
+    fields = [db.account.account_name, db.auth_user.first_name]
     overview_table = SQLFORM.grid(db.account, left=db.account.on(
                                  (db.account.created_by == db.auth_user.id) &
-                                 (db.auth_user.id == USER_ID)),
+                                 (db.auth_user.id == USER_ID)), fields=fields,
                                   create=False, details=False, csv=False)
     account_form = account_form + overview_table
     return dict(form=account_form)
@@ -77,10 +78,11 @@ def add_category():
         db.commit()
     elif category_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Category')
+    fields = [db.category.category, db.auth_user.first_name]
     overview_table = SQLFORM.grid(query=db.category, left=db.category.on(
                                  (db.category.created_by == db.auth_user.id) &
-                                 (db.auth_user.id == USER_ID)),
-                                 create=False, details=False, csv=False)
+                                 (db.auth_user.id == USER_ID)), fields=fields,
+                                  create=False, details=False, csv=False)
     category_form = category_form + overview_table
     return dict(form=category_form)
 
@@ -98,24 +100,16 @@ def income():
         db.commit()
     elif income_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Income')
-
+    fields = [db.income.account_id, db.income.category_id,
+              db.income.income_date, db.income.amount,
+              db.income.comment_field, db.auth_user.first_name]
     overview_table = SQLFORM.grid(query=db.income, left=db.income.on(
-                                    (db.income.created_by == db.auth_user.id) &
-                                    (db.auth_user.id == USER_ID)),
+                                 (db.income.created_by == db.auth_user.id) &
+                                 (db.auth_user.id == USER_ID)), fields=fields,
                                   create=False, details=False, csv=False)
 
     income_form = income_form + overview_table
     return dict(form=income_form)
-
-
-def create_income_outgoing(account, income_outgoing_form):
-    account.account_id = income_outgoing_form.vars.account_id
-    account.category_id = income_outgoing_form.vars.category_id
-    account.creation_date = income_outgoing_form.vars.income_date
-    account.amount = income_outgoing_form.vars.amount
-    account.comment = income_outgoing_form.vars.comment_field
-    return account
-
 
 @auth.requires_login()
 def outgoing():
@@ -130,12 +124,24 @@ def outgoing():
         db.commit()
     elif outgoing_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Outgoing')
+    fields = [db.outgoing.account_id, db.outgoing.category_id,
+              db.outgoing.outgoing_date, db.outgoing.amount,
+              db.outgoing.comment_field, db.auth_user.first_name]
     overview_table = SQLFORM.grid(query=db.outgoing, left=db.outgoing.on(
                                  (db.outgoing.created_by == db.auth_user.id) &
-                                 (db.auth_user.id == USER_ID)),
-                                 create=False, details=False, csv=False)
+                                 (db.auth_user.id == USER_ID)), fields=fields,
+                                  create=False, details=False, csv=False)
     outgoing_form = outgoing_form + overview_table
     return dict(form=outgoing_form)
+
+
+def create_income_outgoing(account, income_outgoing_form):
+    account.account_id = income_outgoing_form.vars.account_id
+    account.category_id = income_outgoing_form.vars.category_id
+    account.creation_date = income_outgoing_form.vars.income_date
+    account.amount = income_outgoing_form.vars.amount
+    account.comment = income_outgoing_form.vars.comment_field
+    return account
 
 
 @auth.requires_login()
