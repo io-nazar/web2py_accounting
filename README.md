@@ -2,6 +2,11 @@
 * With the help of this accounting application user has possibility to manage his budget / finances.
 
 
+Images
+![image](applications/accounting/images/income.jpeg)
+![image](applications/accounting/images/outgoing.jpeg)
+![image](applications/accounting/images/balance.jpeg)
+
 # Educational goal
  * learn how to write quick code solutions by  using agile principles (eXtreme programming)
  * learn to write modular code combining with oop technics
