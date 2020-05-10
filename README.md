@@ -5,7 +5,7 @@
 
 
 Images
-![image](applications/accounting/images/income.jpg)
+![image](applications/accounting/images/incoming.jpg)
 ![image](applications/accounting/images/outgoing.jpg)
 ![image](applications/accounting/images/balance.jpg)
 
