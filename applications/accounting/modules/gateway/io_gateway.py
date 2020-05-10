@@ -10,21 +10,21 @@ class IOGateway:
     def add_category(self, account):
         self._db.category.insert(category=account.category)
 
-    def add_income(self, account):
-        self._db.income.insert(account_id=account.account_id,
-                               category_id=account.category_id,
-                               income_date=account.creation_date,
-                               amount=account.amount,
-                               comment_field=account.comment)
+    def add_incoming(self, account):
+        self._db.incoming.insert(account_id=account.account_id,
+                                 category_id=account.category_id,
+                                 incoming_date=account.creation_date,
+                                 amount=account.amount,
+                                 comment_field=account.comment)
 
-    def get_income(self):
-        query = ((self._db.income.created_by == self._db.auth_user.id) &
+    def get_incoming(self):
+        query = ((self._db.incoming.created_by == self._db.auth_user.id) &
                  (self._db.auth_user.id == self._user_id))
-        income_rows = self._db(query=query).select()
-        incomes = []
-        for income_row in income_rows:
-            incomes.append(dict(amount=income_row['income'].amount))
-        return incomes
+        incoming_rows = self._db(query=query).select()
+        incoming = []
+        for incoming_row in incoming_rows:
+            incoming.append(dict(amount=incoming_row['incoming'].amount))
+        return incoming
 
     def add_outgoing(self, account):
         self._db.outgoing.insert(account_id=account.account_id,

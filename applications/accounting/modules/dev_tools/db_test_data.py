@@ -18,20 +18,20 @@ class InsertTestData:
                         dict(category='Other'),
         ])
 
-        self.db.income.bulk_insert([
+        self.db.incoming.bulk_insert([
                         dict(account_id=accounts_ids[0],
                              category_id=category_ids[0],
-                             income_date=datetime.today(),
+                             incoming_date=datetime.today(),
                              amount=10.1,
                              comment_field='Some comment 1'),
                         dict(account_id=accounts_ids[1],
                              category_id=category_ids[1],
-                             income_date=datetime.today(),
+                             incoming_date=datetime.today(),
                              amount=100.2,
                              comment_field='Some comment 2'),
                         dict(account_id=accounts_ids[2],
                              category_id=category_ids[2],
-                             income_date=datetime.today(),
+                             incoming_date=datetime.today(),
                              amount=1000.3,
                              comment_field='Some comment 3')])
 

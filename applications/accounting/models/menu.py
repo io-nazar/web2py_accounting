@@ -6,7 +6,7 @@ if not configuration.get('app.production'):
                                              'create_account')),
             (T('Add Category'), False, URL('accounting', 'account',
                                            'add_category'))]),
-        (T('Income'), False, URL('accounting', 'account', 'income')),
+        (T('Incoming'), False, URL('accounting', 'account', 'incoming')),
         (T('Outgoing'), False, URL('accounting', 'account', 'outgoing')),
         (T('Balance'), False, URL('accounting', 'account', 'balance')),
         (T('Dev Tools'), False, '#', [
@@ -21,7 +21,7 @@ if configuration.get('app.production'):
                                              'create_account')),
             (T('Add Category'), False, URL('accounting', 'account',
                                            'add_category'))]),
-        (T('Income'), False, URL('accounting', 'account', 'income')),
+        (T('Incoming'), False, URL('accounting', 'account', 'incoming')),
         (T('Outgoing'), False, URL('accounting', 'account', 'outgoing')),
         (T('Balance'), False, URL('accounting', 'account', 'balance'))
     ]
