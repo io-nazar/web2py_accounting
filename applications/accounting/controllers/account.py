@@ -1,5 +1,6 @@
 from applications.accounting.modules.gateway.io_gateway import IOGateway
-from applications.accounting.modules.accounting.accounting import Account
+from applications.accounting.modules.accounting.accounting import (
+     Account, AccountOutgoing, AccountIncoming)
 import logging
 
 logger = logging.getLogger('web2py.app.accounting')
@@ -90,14 +91,14 @@ def add_category():
 
 @auth.requires_login()
 def incoming():
-    account = Account()
+    acc_in = AccountIncoming()
     gateway_io = IOGateway(db=db)
     incoming_form = get_factory_form(ftype='incoming')
     if incoming_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Incoming')
-        account = create_incoming_outgoing(account=account,
-                                           incoming_outgoing_form=incoming_form)
-        gateway_io.add_incoming(account=account)
+        acc_in = create_incoming_outgoing(account=acc_in,
+                                          incoming_outgoing_form=incoming_form)
+        gateway_io.add_incoming(account=acc_in)
         db.commit()
     elif incoming_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Incoming')
@@ -115,14 +116,14 @@ def incoming():
 
 @auth.requires_login()
 def outgoing():
-    account = Account()
+    acc_out = AccountOutgoing()
     gateway_io = IOGateway(db=db)
     outgoing_form = get_factory_form(ftype='outgoing')
     if outgoing_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Outgoing')
-        account = create_incoming_outgoing(account=account,
+        acc_out = create_incoming_outgoing(account=acc_out,
                                            incoming_outgoing_form=outgoing_form)
-        gateway_io.add_outgoing(account=account)
+        gateway_io.add_outgoing(account=acc_out)
         db.commit()
     elif outgoing_form.errors:
         response.flash = get_msg(msg_type='error', msg_str='Outgoing')
@@ -150,20 +151,19 @@ def create_incoming_outgoing(account, incoming_outgoing_form):
 def balance():
     account = Account()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
-
     outgoing = gateway_io.get_outgoing()
     outgoing_amount = account.extract_amounts(values=outgoing, key='amount')
-    tot_outgoing_amount = account.sum_up_amount(amounts=outgoing_amount)
+    tot_outgoing_amounts = account.sum_up_amount(amounts=outgoing_amount)
     logger.debug('balance > total outgoing amount: {}'.
-                 format(tot_outgoing_amount))
+                 format(tot_outgoing_amounts))
 
     incoming = gateway_io.get_incoming()
     incoming_amount = account.extract_amounts(values=incoming, key='amount')
-    tot_incoming_amount = account.sum_up_amount(amounts=incoming_amount)
+    tot_incoming_amounts = account.sum_up_amount(amounts=incoming_amount)
     logger.debug(
-        'balance > total incoming amount: {}'.format(tot_incoming_amount))
+        'balance > total incoming amount: {}'.format(tot_incoming_amounts))
 
-    total_balance = tot_incoming_amount - tot_outgoing_amount
+    total_balance = tot_incoming_amounts - tot_outgoing_amounts
     total_balance = round(total_balance, 2)
     account.total_balance = total_balance
     logger.debug('balance > total balance: {}'.format(account.total_balance))
