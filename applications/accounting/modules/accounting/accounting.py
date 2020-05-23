@@ -108,4 +108,4 @@ class Account(Accounting):
         totalized_amount = 0.0
         for amount in amounts:
             totalized_amount += amount
-        return round(totalized_amount, 2)
+        return float('%.2f' % totalized_amount)
