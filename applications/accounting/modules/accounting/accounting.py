@@ -109,3 +109,13 @@ class Account(Accounting):
         for amount in amounts:
             totalized_amount += amount
         return float('%.2f' % totalized_amount)
+
+
+class AccountOutgoing(Account):
+    def __init__(self):
+        super(AccountOutgoing, self).__init__(self)
+
+
+class AccountIncoming(Account):
+    def __init__(self):
+        super(AccountIncoming, self).__init__(self)
