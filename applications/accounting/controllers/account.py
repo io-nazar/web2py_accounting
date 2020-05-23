@@ -152,13 +152,13 @@ def balance():
     gateway_io = IOGateway(db=db, user_id=USER_ID)
 
     outgoing = gateway_io.get_outgoing()
-    outgoing_amount = account.extract_amount(values=outgoing, key='amount')
+    outgoing_amount = account.extract_amounts(values=outgoing, key='amount')
     tot_outgoing_amount = account.sum_up_amount(amounts=outgoing_amount)
     logger.debug('balance > total outgoing amount: {}'.
                  format(tot_outgoing_amount))
 
     incoming = gateway_io.get_incoming()
-    incoming_amount = account.extract_amount(values=incoming, key='amount')
+    incoming_amount = account.extract_amounts(values=incoming, key='amount')
     tot_incoming_amount = account.sum_up_amount(amounts=incoming_amount)
     logger.debug(
         'balance > total incoming amount: {}'.format(tot_incoming_amount))

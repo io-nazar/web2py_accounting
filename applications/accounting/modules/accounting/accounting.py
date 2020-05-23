@@ -70,7 +70,7 @@ class Account(Accounting):
 
     @property
     def amount(self):
-        return round(self._amount, 2)
+        return float('%.2f' % self._amount)
 
     @amount.setter
     def amount(self, amount):
@@ -80,7 +80,7 @@ class Account(Accounting):
 
     @property
     def total_balance(self):
-        return round(self._total_balance, 2)
+        return float('%.2f' % self._total_balance)
 
     @total_balance.setter
     def total_balance(self, total_balance):
@@ -97,7 +97,7 @@ class Account(Accounting):
         self._comment = comment
 
     @staticmethod
-    def extract_amount(values, key):
+    def extract_amounts(values, key):
         amounts = []
         for value in values:
             amounts.append(value[key])
