@@ -22,11 +22,13 @@ Images
 
 # Requirements
 Create simple accounting application for managing incoming and outgoing finances.
+* User should be able create his own personalized account
 The base structure should consist of incoming, outgoing and balance parts.
 * Incoming: In the incoming part user has possibility to enter and view required data.
 * Outgoing: In the incoming part user has possibility to enter and view required data.
 * Balance: In the balance part should view difference of total amount between incoming and outgoing parts.
   balance = SUM(incoming amount) – SUM(outgoing amount)
+* Implement Pie Chart in to Incoming and Outgoing sections
 
 # Dependencies
   * web2py web framework (used python 3.6)
@@ -38,6 +40,7 @@ The base structure should consist of incoming, outgoing and balance parts.
 * 3. create via web2py admin interface new application called "accounting"
 * 4. copy repositories code applications/accounting in to ../web2py/applications/accounting
 
+# Configuration
 
 # Why this code is published?
 * Author publishes this code purely for educational / exercise purposes
