@@ -46,6 +46,6 @@ The base structure should consist of incoming, outgoing and balance parts.
 # Why this code is published?
 * Author publishes this code purely for educational / exercise purposes
 * Author allows viewing and reviewing his code
-* Author forbids any commercial/private use of his code (write your own solution)
+* Author forbids any commercial/private use of this code (write your own solution)
 
 TODO improve readme file :)
