@@ -32,6 +32,7 @@ The base structure should consist of incoming, outgoing and balance parts.
 
 # Dependencies
   * web2py web framework (used python 3.6)
+  * bokeh v.2.0.2
 
 
 # Installation
