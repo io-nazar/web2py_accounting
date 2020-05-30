@@ -15,6 +15,7 @@ class Account(Accounting):
         self._category = category
         self._creation_date = creation_date
         self._amount = amount
+        self._amounts = None
         self._total_balance = total_balance
         self._comment = comment
 
@@ -79,6 +80,16 @@ class Account(Accounting):
         self._amount = amount
 
     @property
+    def amounts(self):
+        return self._amounts
+
+    @amounts.setter
+    def amounts(self, amounts):
+        if not amounts:
+            raise ValueError('Error! amounts')
+        self._amounts = amounts
+
+    @property
     def total_balance(self):
         return float('%.2f' % self._total_balance)
 
@@ -103,10 +114,9 @@ class Account(Accounting):
             amounts.append(value[key])
         return amounts
 
-    @staticmethod
-    def sum_up_amount(amounts):
+    def sum_up_amounts(self):
         totalized_amount = 0.0
-        for amount in amounts:
+        for amount in self.amounts:
             totalized_amount += amount
         return float('%.2f' % totalized_amount)
 
@@ -123,4 +133,4 @@ class AccountIncoming(Account):
 
 class AccountBalance(Account):
     def __init__(self):
-        super(AccountIncoming, self).__init__(self)
+        super(AccountBalance, self).__init__(self)

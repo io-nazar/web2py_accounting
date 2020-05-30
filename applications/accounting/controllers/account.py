@@ -1,5 +1,5 @@
-from applications.accounting.modules.application.gateway import IOGateway
-from applications.accounting.modules.application.accounting import (
+from applications.accounting.modules.application.gateway.io_gateway import IOGateway
+from applications.accounting.modules.application.accounting.accounting import (
      Account, AccountOutgoing, AccountIncoming, AccountBalance)
 import logging
 
@@ -149,24 +149,30 @@ def create_incoming_outgoing(account, incoming_outgoing_form):
 
 @auth.requires_login()
 def balance():
-    account = AccountBalance()
+    account_ba = AccountBalance()
+    account_out = AccountOutgoing()
+    account_in = AccountIncoming()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
     outgoing = gateway_io.get_outgoing()
-    outgoing_amount = account.extract_amounts(values=outgoing, key='amount')
-    tot_outgoing_amounts = account.sum_up_amount(amounts=outgoing_amount)
+    account_out.amounts = account_ba.extract_amounts(values=outgoing,
+                                                     key='amount')
+
+    tot_outgoing_amounts = account_out.sum_up_amounts()
     logger.debug('balance > total outgoing amount: {}'.
                  format(tot_outgoing_amounts))
 
     incoming = gateway_io.get_incoming()
-    incoming_amount = account.extract_amounts(values=incoming, key='amount')
-    tot_incoming_amounts = account.sum_up_amount(amounts=incoming_amount)
+    account_in.amounts = account_ba.extract_amounts(values=incoming,
+                                                    key='amount')
+    tot_incoming_amounts = account_in.sum_up_amounts()
+
     logger.debug(
         'balance > total incoming amount: {}'.format(tot_incoming_amounts))
 
     total_balance = tot_incoming_amounts - tot_outgoing_amounts
     total_balance = round(total_balance, 2)
-    account.total_balance = total_balance
-    logger.debug('balance > total balance: {}'.format(account.total_balance))
+    account_ba.total_balance = total_balance
+    logger.debug('balance > total balance: {}'.format(account_ba.total_balance))
 
     return dict(form=dict(balance=total_balance))
 
