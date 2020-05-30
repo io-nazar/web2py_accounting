@@ -111,7 +111,8 @@ def incoming():
                                   create=False, details=False, csv=False)
 
     incoming_form = incoming_form + overview_table
-    return dict(form=incoming_form)
+    plot_html = draw_plot()
+    return dict(form=incoming_form, plot_html=plot_html)
 
 
 @auth.requires_login()
@@ -135,7 +136,8 @@ def outgoing():
         (db.auth_user.id == USER_ID)), fields=fields,
                                   create=False, details=False, csv=False)
     outgoing_form = outgoing_form + overview_table
-    return dict(form=outgoing_form)
+    plot_html = draw_plot()
+    return dict(form=outgoing_form, plot_html=plot_html)
 
 
 def create_incoming_outgoing(account, incoming_outgoing_form):

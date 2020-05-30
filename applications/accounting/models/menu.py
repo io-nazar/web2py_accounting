@@ -10,8 +10,9 @@ if not configuration.get('app.production'):
         (T('Outgoing'), False, URL('accounting', 'account', 'outgoing')),
         (T('Balance'), False, URL('accounting', 'account', 'balance')),
         (T('Dev Tools'), False, '#', [
-            (T('Insert Test Data'), False, URL('accounting', 'dev_tools',
-                                               'insert_test_data'))]),
+        (T('Insert Test Data'), False, URL('accounting', 'dev_tools',
+                                            'insert_test_data'))]),
+        (T('Test Plot'), False, URL('accounting', 'account', 'draw_plot')),
     ]
 
 if configuration.get('app.production'):
