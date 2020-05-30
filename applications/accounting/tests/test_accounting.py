@@ -1,5 +1,5 @@
 import unittest
-from applications.accounting.modules.accounting.accounting import Account
+from applications.accounting.modules.application.accounting import Account
 
 
 class TestAccounting(unittest.TestCase):

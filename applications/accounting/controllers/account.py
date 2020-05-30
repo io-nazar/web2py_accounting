@@ -1,5 +1,5 @@
-from applications.accounting.modules.gateway.io_gateway import IOGateway
-from applications.accounting.modules.accounting.accounting import (
+from applications.accounting.modules.application.gateway import IOGateway
+from applications.accounting.modules.application.accounting import (
      Account, AccountOutgoing, AccountIncoming, AccountBalance)
 import logging
 

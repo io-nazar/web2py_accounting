@@ -1,4 +1,4 @@
-from applications.accounting.modules.dev_tools.db_test_data import (
+from applications.accounting.modules.application.dev_tools import (
      InsertTestData)
 
 
