@@ -1,6 +1,6 @@
 from applications.accounting.modules.gateway.io_gateway import IOGateway
 from applications.accounting.modules.accounting.accounting import (
-     Account, AccountOutgoing, AccountIncoming)
+     Account, AccountOutgoing, AccountIncoming, AccountBalance)
 import logging
 
 logger = logging.getLogger('web2py.app.accounting')
@@ -149,7 +149,7 @@ def create_incoming_outgoing(account, incoming_outgoing_form):
 
 @auth.requires_login()
 def balance():
-    account = Account()
+    account = AccountBalance()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
     outgoing = gateway_io.get_outgoing()
     outgoing_amount = account.extract_amounts(values=outgoing, key='amount')

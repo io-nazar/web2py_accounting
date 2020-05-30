@@ -119,3 +119,8 @@ class AccountOutgoing(Account):
 class AccountIncoming(Account):
     def __init__(self):
         super(AccountIncoming, self).__init__(self)
+
+
+class AccountBalance(Account):
+    def __init__(self):
+        super(AccountIncoming, self).__init__(self)
