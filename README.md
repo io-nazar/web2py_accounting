@@ -12,8 +12,6 @@ Images
 # Current work in progress
 * Task: Implement Pie Chart: Category / Amount in to Incoming and Outgoing sections
 
-![image](applications/accounting/images/balance.jpg)
-
 Prototype
 ![image](applications/accounting/images/prototype_chart.jpg)
 
