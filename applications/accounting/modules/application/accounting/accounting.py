@@ -26,7 +26,7 @@ class Account(Accounting):
     @account_id.setter
     def account_id(self, account_id):
         if not account_id:
-            raise ValueError('Error! account_id ')
+            raise Exception('Error! account_id ')
         self._account_id = account_id
 
     @property
@@ -36,7 +36,7 @@ class Account(Accounting):
     @account_name.setter
     def account_name(self, account_name):
         if not account_name:
-            raise ValueError('Error! account_name ')
+            raise Exception('Error! account_name ')
         self._account_name = account_name
 
     @property
@@ -46,7 +46,7 @@ class Account(Accounting):
     @category_id.setter
     def category_id(self, category_id):
         if not category_id:
-            raise ValueError('Error! category_id')
+            raise Exception('Error! category_id')
         self._category_id = category_id
 
     @property
@@ -56,7 +56,7 @@ class Account(Accounting):
     @category.setter
     def category(self, category):
         if not category:
-            raise ValueError('Error! category')
+            raise Exception('Error! category')
         self._category = category
 
     @property
@@ -66,7 +66,7 @@ class Account(Accounting):
     @creation_date.setter
     def creation_date(self, creation_date):
         if not creation_date:
-            raise ValueError('Error! creation_date')
+            raise Exception('Error! creation_date')
         self._creation_date = creation_date
 
     @property
@@ -76,7 +76,7 @@ class Account(Accounting):
     @amount.setter
     def amount(self, amount):
         if not amount:
-            raise ValueError('Error! amount')
+            raise Exception('Error! amount')
         self._amount = amount
 
     @property
@@ -86,7 +86,7 @@ class Account(Accounting):
     @amounts.setter
     def amounts(self, amounts):
         if not amounts:
-            raise ValueError('Error! amounts')
+            raise Exception('Error! amounts')
         self._amounts = amounts
 
     @property
@@ -96,7 +96,7 @@ class Account(Accounting):
     @total_balance.setter
     def total_balance(self, total_balance):
         if not total_balance:
-            raise ValueError('Error! total_amount', total_balance)
+            raise Exception('Error! total_amount', total_balance)
         self._total_balance = total_balance
 
     @property
