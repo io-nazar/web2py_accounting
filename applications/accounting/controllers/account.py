@@ -164,7 +164,7 @@ def balance():
     logger.debug('balance > total outgoing amount: {}'.
                  format(tot_outgoing_amounts))
 
-    incoming = gateway_io.get_incoming()
+    incoming = gateway_io.get_incoming_data()
     account_in.amounts = account_ba.extract_amounts(values=incoming,
                                                     key='amount')
     tot_incoming_amounts = account_in.sum_up_amounts()

@@ -17,13 +17,18 @@ class IOGateway:
                                  amount=account.amount,
                                  comment_field=account.comment)
 
-    def get_incoming(self):
+    def get_incoming_data(self):
         query = ((self._db.incoming.created_by == self._db.auth_user.id) &
                  (self._db.auth_user.id == self._user_id))
         incoming_rows = self._db(query=query).select()
         incoming = []
         for incoming_row in incoming_rows:
-            incoming.append(dict(amount=incoming_row['incoming'].amount))
+            incoming.append(
+                dict(account_id=incoming_row['incoming'].account_id,
+                     category_id=incoming_row['incoming'].category_id,
+                     incoming_date=incoming_row['incoming'].incoming_date,
+                     amount=incoming_row['incoming'].amount,
+                     comment=incoming_row['incoming'].comment_field))
         return incoming
 
     def add_outgoing(self, account):
