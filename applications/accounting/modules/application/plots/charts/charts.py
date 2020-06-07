@@ -37,7 +37,7 @@ class PieChart(BaseChart):
             columns={'index': 'category'})
         data['angle'] = data['value'] / data['value'].sum() * 2 * pi
         data['color'] = Category20c[len(test_data)]
-        p = figure(plot_height=500, title="Category Pie Chart",
+        p = figure(plot_height=500, title="Pie Chart: Category / Amount",
                    toolbar_location=None,
                    tools="hover", tooltips="@category: @value",
                    x_range=(-1, 1.0))

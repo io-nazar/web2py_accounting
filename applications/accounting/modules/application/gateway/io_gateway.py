@@ -33,13 +33,17 @@ class IOGateway:
                                  amount=account.amount,
                                  comment_field=account.comment)
 
-    def get_outgoing(self):
+    def get_outgoing_data(self):
         query = ((self._db.outgoing.created_by == self._db.auth_user.id) &
                  (self._db.auth_user.id == self._user_id))
         outgoing_rows = self._db(query=query).select()
 
         outgoing = []
         for outgoing_row in outgoing_rows:
-            outgoing.append(dict(amount=outgoing_row['outgoing'].amount))
+            outgoing.append(
+                dict(account_id=outgoing_row['outgoing'].account_id,
+                     category_id=outgoing_row['outgoing'].category_id,
+                     outgoing_date=outgoing_row['outgoing'].outgoing_date,
+                     amount=outgoing_row['outgoing'].amount,
+                     comment=outgoing_row['outgoing'].comment_field))
         return outgoing
-

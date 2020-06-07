@@ -157,10 +157,9 @@ def balance():
     account_out = AccountOutgoing()
     account_in = AccountIncoming()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
-    outgoing = gateway_io.get_outgoing()
+    outgoing = gateway_io.get_outgoing_data()
     account_out.amounts = account_ba.extract_amounts(values=outgoing,
                                                      key='amount')
-
     tot_outgoing_amounts = account_out.sum_up_amounts()
     logger.debug('balance > total outgoing amount: {}'.
                  format(tot_outgoing_amounts))
@@ -192,6 +191,6 @@ def get_msg(msg_type, msg_str):
 @auth.requires_login()
 def draw_plot():
     pie_chart = PieChart()
-    pie_chart.pie_chart_data = dict(Other=2, Dividend=1, Household=3)
+    pie_chart.pie_chart_data = dict(Other=300, Dividend=1100.5, Salary=20000.1)
     plot_html = pie_chart.create_pie_chart()
     return plot_html
