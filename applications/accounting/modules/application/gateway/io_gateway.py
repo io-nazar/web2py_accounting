@@ -23,9 +23,15 @@ class IOGateway:
         incoming_rows = self._db(query=query).select()
         incoming = []
         for incoming_row in incoming_rows:
+            account_id = incoming_row['incoming'].account_id
+            category_id = incoming_row['incoming'].category_id
+            account_row = self._db(
+                self._db.account.id == account_id).select().first()
+            category_row = self._db(
+                self._db.category.id == category_id).select().first()
             incoming.append(
-                dict(account_id=incoming_row['incoming'].account_id,
-                     category_id=incoming_row['incoming'].category_id,
+                dict(account=account_row.account_name,
+                     category_id=category_row.category,
                      incoming_date=incoming_row['incoming'].incoming_date,
                      amount=incoming_row['incoming'].amount,
                      comment=incoming_row['incoming'].comment_field))
