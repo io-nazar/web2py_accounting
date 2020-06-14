@@ -134,7 +134,13 @@ class Account(Accounting):
         return float('%.2f' % totalized_amount)
 
     def get_amount_sum_per_category(self):
-        pass
+        category_set = self.determine_categories_of_account_data()
+
+    def determine_categories_of_account_data(self):
+        category_set = set()
+        for category in self.account_data:
+            category_set.add(category['category'])
+        return category_set
 
 
 class AccountOutgoing(Account):
