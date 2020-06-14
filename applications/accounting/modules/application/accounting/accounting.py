@@ -18,6 +18,7 @@ class Account(Accounting):
         self._amounts = None
         self._total_balance = total_balance
         self._comment = comment
+        self._account_data = list()
 
     @property
     def account_id(self):
@@ -107,6 +108,18 @@ class Account(Accounting):
     def comment(self, comment):
         self._comment = comment
 
+    @property
+    def account_data(self):
+        return self._account_data
+
+    @account_data.setter
+    def account_data(self, account_data):
+        if isinstance(account_data, list):
+            self._account_data = account_data
+        else:
+            raise Exception(
+                'Error {} account data'.format(self.__class__.__name__))
+
     @staticmethod
     def extract_amounts(values, key):
         amounts = []
@@ -119,6 +132,9 @@ class Account(Accounting):
         for amount in self.amounts:
             totalized_amount += amount
         return float('%.2f' % totalized_amount)
+
+    def get_amount_sum_per_category(self):
+        pass
 
 
 class AccountOutgoing(Account):
