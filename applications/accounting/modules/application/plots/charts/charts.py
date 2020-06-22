@@ -23,6 +23,14 @@ class BaseChart:
         else:
             raise Exception('Error chart_title')
 
+    def get_category20c_color(self):
+        if len(self._pie_chart_data) == 1:
+            return ('#3182bd')
+        elif len(self._pie_chart_data) == 2:
+            return ('#3182bd', '#6baed6')
+        else:
+            return Category20c[len(self._pie_chart_data)]
+
 
 class PieChart(BaseChart):
 
@@ -54,12 +62,10 @@ class PieChart(BaseChart):
             raise Exception('Error pie_chart_conf')
 
     def create_pie_chart(self):
-        test_data = self._pie_chart_data
-        data = pd.Series(test_data).reset_index(name='value').rename(
-            columns={'index': 'category'})
+        data = pd.Series(self._pie_chart_data).reset_index(name='value').rename(
+                         columns={'index': 'category'})
         data['angle'] = data['value'] / data['value'].sum() * 2 * pi
-        data['color'] = Category20c[len(test_data)]
-
+        data['color'] = self.get_category20c_color()
         p = figure(plot_height=self.pie_chart_conf['plot_height'],
                    title=self.chart_title,
                    toolbar_location=None,
