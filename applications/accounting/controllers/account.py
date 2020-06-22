@@ -189,11 +189,12 @@ def get_msg(msg_type, msg_str):
 
 
 @auth.requires_login()
-def draw_plot():
-    pie_chart = PieChart()
-    pie_chart.pie_chart_data = dict(Other=300, Dividend=1100.5, Salary=20000.1)
-    pie_chart.pie_chart_conf = dict(xrange=(-1, 1.0), plot_height=500, x=0, y=1,
-                                    radius=0.4)
+def draw_plot(plot_data, plot_type):
+    if plot_type == 'PieChart':
+        pie_chart = PieChart()
+        pie_chart.pie_chart_data = plot_data
+        pie_chart.pie_chart_conf = dict(xrange=(-1, 1.0), plot_height=500,
+                                        x=0, y=1, radius=0.4)
     pie_chart.chart_title = "Pie Chart: Category / Amount"
     plot_html = pie_chart.create_pie_chart()
     return plot_html
