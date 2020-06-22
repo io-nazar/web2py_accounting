@@ -1,3 +1,8 @@
+import logging
+logger = logging.getLogger("web2py.app.accounting")
+logger.setLevel(logging.DEBUG)
+
+
 class Accounting:
     def __init__(self):
         pass
@@ -140,6 +145,8 @@ class Account(Accounting):
         category_set = set()
         for category in self.account_data:
             category_set.add(category['category'])
+        logger.debug('Determined categories of account data: {}'
+                     .format(category_set))
         return category_set
 
 
