@@ -31,7 +31,7 @@ class IOGateway:
                 self._db.category.id == category_id).select().first()
             incoming.append(
                 dict(account=account_row.account_name,
-                     category_id=category_row.category,
+                     category=category_row.category,
                      incoming_date=incoming_row['incoming'].incoming_date,
                      amount=incoming_row['incoming'].amount,
                      comment=incoming_row['incoming'].comment_field))
