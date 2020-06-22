@@ -151,7 +151,14 @@ class Account(Accounting):
                 if account_data['category'] == category_amount['category']:
                     category_amount['amount'] += account_data['amount']
         logger.debug('Sum upped amount per category: {}'.format(categories_lst))
-        return categories_lst
+        amount_per_category = dict()
+        for category in categories_lst:
+            category_amount = dict.fromkeys([category['category']],
+                                            category['amount'])
+            amount_per_category.update(category_amount)
+        logger.debug('Created amount per category {}'
+                     .format(amount_per_category))
+        return amount_per_category
 
     def determine_categories_of_account_data(self):
         category_set = set()
