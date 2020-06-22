@@ -120,7 +120,7 @@ def incoming():
 @auth.requires_login()
 def outgoing():
     acc_out = AccountOutgoing()
-    gateway_io = IOGateway(db=db)
+    gateway_io = IOGateway(db=db, user_id=USER_ID)
     outgoing_form = get_factory_form(ftype='outgoing')
     if outgoing_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Outgoing')
@@ -138,7 +138,11 @@ def outgoing():
         (db.auth_user.id == USER_ID)), fields=fields,
                                   create=False, details=False, csv=False)
     outgoing_form = outgoing_form + overview_table
-    plot_html = draw_plot()
+    outgoing = gateway_io.get_outgoing_data()
+    acc_out.accounts_data = outgoing
+    amount_per_category = acc_out.get_amount_sum_per_category()
+    plot_data = amount_per_category
+    plot_html = draw_plot(plot_data=plot_data, plot_type='PieChart')
     return dict(form=outgoing_form, plot_html=plot_html)
 
 
