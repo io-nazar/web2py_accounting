@@ -23,7 +23,7 @@ class Account(Accounting):
         self._amounts = None
         self._total_balance = total_balance
         self._comment = comment
-        self._account_data = list()
+        self._accounts_data = list()
 
     @property
     def account_id(self):
@@ -114,13 +114,15 @@ class Account(Accounting):
         self._comment = comment
 
     @property
-    def account_data(self):
-        return self._account_data
+    def accounts_data(self):
+        return self._accounts_data
 
-    @account_data.setter
-    def account_data(self, account_data):
-        if isinstance(account_data, list):
-            self._account_data = account_data
+    @accounts_data.setter
+    def accounts_data(self, accounts_data):
+        if isinstance(accounts_data, list):
+            logger.debug('Setting {} account data {}'
+                         .format(self.__class__.__name__, accounts_data))
+            self._accounts_data = accounts_data
         else:
             raise Exception(
                 'Error {} account data'.format(self.__class__.__name__))
@@ -140,10 +142,20 @@ class Account(Accounting):
 
     def get_amount_sum_per_category(self):
         category_set = self.determine_categories_of_account_data()
+        categories_lst = []
+        for category in category_set:
+            categories_lst.append(dict(category=category, amount=0.0))
+        logger.debug('Created Category / Amount list: {}'.format(categories_lst))
+        for account_data in self.accounts_data:
+            for category_amount in categories_lst:
+                if account_data['category'] == category_amount['category']:
+                    category_amount['amount'] += account_data['amount']
+        logger.debug('Sum upped amount per category: {}'.format(categories_lst))
+        return categories_lst
 
     def determine_categories_of_account_data(self):
         category_set = set()
-        for category in self.account_data:
+        for category in self.accounts_data:
             category_set.add(category['category'])
         logger.debug('Determined categories of account data: {}'
                      .format(category_set))
