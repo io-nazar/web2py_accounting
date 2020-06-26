@@ -190,6 +190,8 @@ def balance():
 
 @auth.requires_login()
 def get_msg(msg_type, msg_str):
+    logger.debug('Getting message >  Message Type: {}, Message {}'.format(
+                 msg_type, msg_str))
     if msg_type == 'success':
         return '{} Success! New record was sucessfuly added!'.format(msg_str)
     elif msg_type == 'error':
