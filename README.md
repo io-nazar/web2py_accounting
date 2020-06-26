@@ -9,11 +9,6 @@ Images
 ![image](applications/accounting/images/outgoing.jpg)
 ![image](applications/accounting/images/balance.jpg)
 
-# Current work in progress
-* Task: Implement Pie Chart: Category / Amount in to Incoming and Outgoing sections
-
-Prototype
-![image](applications/accounting/images/prototype_chart.jpg)
 
 # Educational goal
  * learn how to write quick code solutions by  using agile principles (eXtreme programming)
