@@ -98,8 +98,8 @@ def incoming():
     incoming_form = get_factory_form(ftype='incoming')
     if incoming_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Incoming')
-        acc_in = create_incoming_outgoing(account=acc_in,
-                                          incoming_outgoing_form=incoming_form)
+        acc_in = get_data_from_in_out_going_form(
+                 account=acc_in, incoming_outgoing_form=incoming_form)
         gateway_io.add_incoming(account=acc_in)
         db.commit()
     elif incoming_form.errors:
@@ -128,8 +128,8 @@ def outgoing():
     outgoing_form = get_factory_form(ftype='outgoing')
     if outgoing_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Outgoing')
-        acc_out = create_incoming_outgoing(account=acc_out,
-                                           incoming_outgoing_form=outgoing_form)
+        acc_out = get_data_from_in_out_going_form(
+                  account=acc_out, incoming_outgoing_form=outgoing_form)
         gateway_io.add_outgoing(account=acc_out)
         db.commit()
     elif outgoing_form.errors:
@@ -150,7 +150,9 @@ def outgoing():
     return dict(form=outgoing_form, plot_html=plot_html)
 
 
-def create_incoming_outgoing(account, incoming_outgoing_form):
+def get_data_from_in_out_going_form(account, incoming_outgoing_form):
+    logger.debug('Getting data from incoming/outgoing forms.'
+                 'Received Data: {}'.format(incoming_outgoing_form.vars))
     account.account_id = incoming_outgoing_form.vars.account_id
     account.category_id = incoming_outgoing_form.vars.category_id
     account.creation_date = incoming_outgoing_form.vars.incoming_date
@@ -161,6 +163,7 @@ def create_incoming_outgoing(account, incoming_outgoing_form):
 
 @auth.requires_login()
 def balance():
+    logger.debug('Generating Account Balance')
     account_ba = AccountBalance()
     account_out = AccountOutgoing()
     account_in = AccountIncoming()
