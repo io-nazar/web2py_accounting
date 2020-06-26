@@ -94,7 +94,7 @@ def add_category():
 @auth.requires_login()
 def incoming():
     acc_in = AccountIncoming()
-    gateway_io = IOGateway(db=db)
+    gateway_io = IOGateway(db=db, user_id=USER_ID)
     incoming_form = get_factory_form(ftype='incoming')
     if incoming_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Incoming')
@@ -113,7 +113,11 @@ def incoming():
                                   create=False, details=False, csv=False)
 
     incoming_form = incoming_form + overview_table
-    plot_html = draw_plot()
+    incoming = gateway_io.get_incoming_data()
+    acc_in.accounts_data = incoming
+    amount_per_category = acc_in.get_amount_sum_per_category()
+    plot_data = amount_per_category
+    plot_html = draw_plot(plot_data=plot_data, plot_type='PieChart')
     return dict(form=incoming_form, plot_html=plot_html)
 
 
