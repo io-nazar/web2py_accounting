@@ -198,6 +198,8 @@ def get_msg(msg_type, msg_str):
 
 @auth.requires_login()
 def draw_plot(plot_data, plot_type):
+    logger.debug('Draw Plot > Plot Data: {} Plot Type: {}'.format(plot_data,
+                                                                  plot_type))
     if plot_type == 'PieChart':
         pie_chart = PieChart()
         pie_chart.pie_chart_data = plot_data
