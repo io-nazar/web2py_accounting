@@ -54,6 +54,7 @@ def create_factory_form(ftype=None):
 
 @auth.requires_login()
 def create_account():
+    logger.debug('Calling Create Account')
     account = Account()
     gateway_io = IOGateway(db=db)
     account_form = create_factory_form(ftype='account')
@@ -75,6 +76,7 @@ def create_account():
 
 @auth.requires_login()
 def add_category():
+    logger.debug('Calling Add Category')
     account = Account()
     gateway_io = IOGateway(db=db)
     category_form = create_factory_form(ftype='category')
