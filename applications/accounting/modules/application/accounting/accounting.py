@@ -153,14 +153,13 @@ class Account(Accounting):
                     category_amount['amount'] += account_data['amount']
         logger.debug('Sum upped amount per category: {}'.format(
                      catgr.categories_lst))
-        amount_per_category = dict()
         for category in catgr.categories_lst:
             category_amount = dict.fromkeys([category['category']],
                                             category['amount'])
-            amount_per_category.update(category_amount)
+            catgr.amount_per_category.update(category_amount)
         logger.debug('Created amount per category {}'
-                     .format(amount_per_category))
-        return amount_per_category
+                     .format(catgr.amount_per_category))
+        return catgr.amount_per_category
 
     def determine_categories_of_account_data(self):
         category_set = set()
@@ -186,6 +185,16 @@ class Category:
             raise Exception('Class: {} Error Categories List '
                             .format(self.__class__.__name__))
         self._categories_lst = categories_lst
+
+    @property
+    def amount_per_category(self):
+        return self._amount_per_category
+
+    @amount_per_category.setter
+    def amount_per_category(self, amount_per_category):
+        if isinstance(amount_per_category, dict) or not amount_per_category:
+            raise Exception('Class: {} Error Amount Per Category '
+                            .format(self.__class__.__name__))
 
 
 class AccountOutgoing(Account):
