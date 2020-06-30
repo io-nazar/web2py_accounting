@@ -174,6 +174,7 @@ class Account(Accounting):
 class Category:
     def __init__(self):
         self._categories_lst = list()
+        self._amount_per_category = dict()
 
     @property
     def categories_lst(self):
@@ -181,7 +182,7 @@ class Category:
 
     @categories_lst.setter
     def categories_lst(self, categories_lst):
-        if not categories_lst:
+        if isinstance(categories_lst, list) or not categories_lst:
             raise Exception('Class: {} Error Categories List '
                             .format(self.__class__.__name__))
         self._categories_lst = categories_lst
