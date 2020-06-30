@@ -162,18 +162,19 @@ class Account(Accounting):
         return catgr.amount_per_category
 
     def determine_categories_of_account_data(self):
-        category_set = set()
+        catgr = Category()
         for category in self.accounts_data:
-            category_set.add(category['category'])
+            catgr.category_set.add(category['category'])
         logger.debug('Determined categories of account data: {}'
-                     .format(category_set))
-        return category_set
+                     .format(catgr.category_set))
+        return catgr.category_set
 
 
 class Category:
     def __init__(self):
         self._categories_lst = list()
         self._amount_per_category = dict()
+        self._category_set = set()
 
     @property
     def categories_lst(self):
@@ -195,6 +196,18 @@ class Category:
         if isinstance(amount_per_category, dict) or not amount_per_category:
             raise Exception('Class: {} Error Amount Per Category '
                             .format(self.__class__.__name__))
+        self._amount_per_category = amount_per_category
+
+    @property
+    def category_set(self):
+        return self._category_set
+
+    @category_set.setter
+    def category_set(self, category_set):
+        if isinstance(category_set, set) or not category_set:
+            raise Exception('Class: {} Error Category Set'
+                            .format(self.__class__.__name__))
+        self._category_set = category_set
 
 
 class AccountOutgoing(Account):
