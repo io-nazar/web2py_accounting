@@ -98,6 +98,7 @@ def add_category():
 
 @auth.requires_login()
 def incoming():
+    logger.debug('Calling Incoming Section')
     acc_in = AccountIncoming()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
     incoming_form = create_factory_form(ftype='incoming')
@@ -128,6 +129,7 @@ def incoming():
 
 @auth.requires_login()
 def outgoing():
+    logger.debug('Calling Outgoing Section')
     acc_out = AccountOutgoing()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
     outgoing_form = create_factory_form(ftype='outgoing')
