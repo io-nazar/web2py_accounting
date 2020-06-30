@@ -11,7 +11,7 @@ USER_ID = auth.user.id
 
 
 @auth.requires_login()
-def get_factory_form(ftype=None):
+def create_factory_form(ftype=None):
     if ftype == 'incoming' or ftype == 'outgoing':
         form = SQLFORM.factory(
             Field(fieldname='account_id',
@@ -32,6 +32,7 @@ def get_factory_form(ftype=None):
             Field(fieldname='comment_field',
                   type='string',
                   label='Comment'))
+        logger.debug('Created {} form'.format(ftype))
         return form
 
     if ftype == 'account':
@@ -39,6 +40,7 @@ def get_factory_form(ftype=None):
                                      type='reference account',
                                      requires=IS_NOT_EMPTY(),
                                      label='Account Name'))
+        logger.debug('Created {} form'.format(ftype))
         return form
 
     if ftype == 'category':
@@ -46,6 +48,7 @@ def get_factory_form(ftype=None):
                                      type='reference category',
                                      requires=IS_NOT_EMPTY(),
                                      label='Category'))
+        logger.debug('Created {} form'.format(ftype))
         return form
 
 
@@ -53,7 +56,7 @@ def get_factory_form(ftype=None):
 def create_account():
     account = Account()
     gateway_io = IOGateway(db=db)
-    account_form = get_factory_form(ftype='account')
+    account_form = create_factory_form(ftype='account')
     if account_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Account')
         account.account_name = account_form.vars.account_name
@@ -74,7 +77,7 @@ def create_account():
 def add_category():
     account = Account()
     gateway_io = IOGateway(db=db)
-    category_form = get_factory_form(ftype='category')
+    category_form = create_factory_form(ftype='category')
     if category_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Category')
         account.category = category_form.vars.category
@@ -95,7 +98,7 @@ def add_category():
 def incoming():
     acc_in = AccountIncoming()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
-    incoming_form = get_factory_form(ftype='incoming')
+    incoming_form = create_factory_form(ftype='incoming')
     if incoming_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Incoming')
         acc_in = get_data_from_in_out_going_form(
@@ -125,7 +128,7 @@ def incoming():
 def outgoing():
     acc_out = AccountOutgoing()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
-    outgoing_form = get_factory_form(ftype='outgoing')
+    outgoing_form = create_factory_form(ftype='outgoing')
     if outgoing_form.process().accepted:
         response.flash = get_msg(msg_type='success', msg_str='Outgoing')
         acc_out = get_data_from_in_out_going_form(
