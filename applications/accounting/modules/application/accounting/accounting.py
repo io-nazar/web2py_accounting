@@ -142,17 +142,19 @@ class Account(Accounting):
 
     def get_amount_sum_per_category(self):
         category_set = self.determine_categories_of_account_data()
-        categories_lst = []
+        catgr = Category()
         for category in category_set:
-            categories_lst.append(dict(category=category, amount=0.0))
-        logger.debug('Created Category / Amount list: {}'.format(categories_lst))
+            catgr.categories_lst.append(dict(category=category, amount=0.0))
+        logger.debug('Created Category / Amount list: {}'.format(
+                     catgr.categories_lst))
         for account_data in self.accounts_data:
-            for category_amount in categories_lst:
+            for category_amount in catgr.categories_lst:
                 if account_data['category'] == category_amount['category']:
                     category_amount['amount'] += account_data['amount']
-        logger.debug('Sum upped amount per category: {}'.format(categories_lst))
+        logger.debug('Sum upped amount per category: {}'.format(
+                     catgr.categories_lst))
         amount_per_category = dict()
-        for category in categories_lst:
+        for category in catgr.categories_lst:
             category_amount = dict.fromkeys([category['category']],
                                             category['amount'])
             amount_per_category.update(category_amount)
@@ -167,6 +169,22 @@ class Account(Accounting):
         logger.debug('Determined categories of account data: {}'
                      .format(category_set))
         return category_set
+
+
+class Category:
+    def __init__(self):
+        self._categories_lst = list()
+
+    @property
+    def categories_lst(self):
+        return self._categories_lst
+
+    @categories_lst.setter
+    def categories_lst(self, categories_lst):
+        if not categories_lst:
+            raise Exception('Class: {} Error Categories List '
+                            .format(self.__class__.__name__))
+        self._categories_lst = categories_lst
 
 
 class AccountOutgoing(Account):
