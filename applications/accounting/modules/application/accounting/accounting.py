@@ -140,6 +140,14 @@ class Account(Accounting):
             totalized_amount += amount
         return float('%.2f' % totalized_amount)
 
+    def sum_up_catergory_amount(self, category):
+        for account_data in self.accounts_data:
+            for category_amount in category.categories_lst:
+                if account_data['category'] == category_amount['category']:
+                    category_amount['amount'] += account_data['amount']
+        logger.debug('[sum_up_catergory_amount]: {}'.format(category_amount))
+        return category_amount
+
     def get_amount_sum_per_category(self):
         category_set = self.determine_categories_of_account_data()
         catgr = Category()
@@ -147,10 +155,7 @@ class Account(Accounting):
             catgr.categories_lst.append(dict(category=category, amount=0.0))
         logger.debug('Created Category / Amount list: {}'.format(
                      catgr.categories_lst))
-        for account_data in self.accounts_data:
-            for category_amount in catgr.categories_lst:
-                if account_data['category'] == category_amount['category']:
-                    category_amount['amount'] += account_data['amount']
+        category_amount = self.sum_up_catergory_amount(category=catgr)
         logger.debug('Sum upped amount per category: {}'.format(
                      catgr.categories_lst))
         for category in catgr.categories_lst:
