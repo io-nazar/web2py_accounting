@@ -1,3 +1,7 @@
+import logging
+logger = logging.getLogger('web2py.app.accounting')
+logger.setLevel(logging.DEBUG)
+
 class IOGateway:
 
     def __init__(self, db, user_id=None):
@@ -18,6 +22,7 @@ class IOGateway:
                                  comment_field=account.comment)
 
     def get_incoming_data(self):
+        logger.debug('selecting incoming data from the database')
         query = ((self._db.incoming.created_by == self._db.auth_user.id) &
                  (self._db.auth_user.id == self._user_id))
         incoming_rows = self._db(query=query).select()
@@ -38,6 +43,7 @@ class IOGateway:
         return incoming
 
     def add_outgoing(self, account):
+        logger.debug('inserting outgoing data in to the database')
         self._db.outgoing.insert(account_id=account.account_id,
                                  category_id=account.category_id,
                                  outgoing_date=account.creation_date,
@@ -45,6 +51,7 @@ class IOGateway:
                                  comment_field=account.comment)
 
     def get_outgoing_data(self):
+        logger.debug('selecting outgoing data from the database')
         query = ((self._db.outgoing.created_by == self._db.auth_user.id) &
                  (self._db.auth_user.id == self._user_id))
         outgoing_rows = self._db(query=query).select()
