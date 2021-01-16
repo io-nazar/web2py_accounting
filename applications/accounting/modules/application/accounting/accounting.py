@@ -24,6 +24,7 @@ class Account(Accounting):
         self._total_balance = total_balance
         self._comment = comment
         self._accounts_data = list()
+        self._categories = Category()
 
     @property
     def account_id(self):
@@ -140,44 +141,44 @@ class Account(Accounting):
             totalized_amount += amount
         return float('%.2f' % totalized_amount)
 
-    def _sum_up_catergory_amount(self, category):
+    def _sum_up_catergory_amount(self):
         for account_data in self.accounts_data:
-            for category_amount in category.categories_lst:
+            for category_amount in self._categories.categories_lst:
                 if account_data['category'] == category_amount['category']:
                     category_amount['amount'] += account_data['amount']
         logger.debug('[sum_up_catergory_amount]: {}'.format(category_amount))
         return category_amount
 
-    def _update_category_amount(self, catgr):
-        for category in catgr.categories_lst:
+    def _update_category_amount(self):
+        for category in self._categories.categories_lst:
             category_amount = dict.fromkeys([category['category']],
-                                            category['amount'])
-            catgr.amount_per_category.update(category_amount)
-        return catgr
+                                             category['amount'])
+            self._categories.amount_per_category.update(category_amount)
 
     def get_amount_sum_per_category(self):
-        category_set = self.determine_categories_of_account_data()
-        catgr = Category()
-        for category in category_set:
-            catgr.categories_lst.append(dict(category=category, amount=0.0))
-        logger.debug('Created Category / Amount list: {}'.format(
-                     catgr.categories_lst))
-        category_amount = self._sum_up_catergory_amount(category=catgr)
-        logger.debug('Sum upped amount per category: {}'.format(
-                     catgr.categories_lst))
-        catgr = self._update_category_amount(catgr=catgr)
+        self.determine_categories_of_account_data()
 
+        for category in self._categories.category_set:
+            self._categories.categories_lst.append(dict(category=category,
+                                                        amount=0.0))
+        logger.debug('Created Category / Amount list: {}'.format(
+            self._categories.categories_lst))
+
+        category_amount = self._sum_up_catergory_amount()
+        logger.debug('Sum upped amount per category: {}'.format(
+                     self._categories.categories_lst))
+
+        self._update_category_amount()
         logger.debug('Created amount per category {}'
-                     .format(catgr.amount_per_category))
-        return catgr.amount_per_category
+                     .format(self._categories.amount_per_category))
+
+        return self._categories.amount_per_category
 
     def determine_categories_of_account_data(self):
-        catgr = Category()
         for category in self.accounts_data:
-            catgr.category_set.add(category['category'])
+            self._categories.category_set.add(category['category'])
         logger.debug('Determined categories of account data: {}'
-                     .format(catgr.category_set))
-        return catgr.category_set
+                     .format(self._categories.category_set))
 
 
 class Category:
