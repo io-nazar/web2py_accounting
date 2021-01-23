@@ -130,10 +130,7 @@ class Account(Accounting):
 
     @staticmethod
     def extract_amounts(values, key):
-        amounts = []
-        for value in values:
-            amounts.append(value[key])
-        return amounts
+        return [value[key] for value in values]
 
     def sum_up_amounts(self):
         totalized_amount = 0.0
