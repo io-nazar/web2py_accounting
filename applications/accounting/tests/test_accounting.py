@@ -34,12 +34,9 @@ class TestAccounting(unittest.TestCase):
                     }]
         account = Account()
         account.accounts_data = acc_dat
-        categories_set = account.determine_categories_of_account_data()
-        categories_lst = list(categories_set)
-        self.assertEqual(first='Dividend',
-                         second=categories_lst[0])
-        self.assertEqual(first='Other',
-                         second=categories_lst[1])
+        account.determine_categories_of_account_data()
+        self.assertTrue(
+            {'Dividend', 'Other'}.issuperset(account._categories.category_set))
 
 
 if __name__ == '__main__':
