@@ -5,6 +5,31 @@ from applications.accounting.modules.application.accounting.accounting import (
 
 
 class TestAccounting(unittest.TestCase):
+    @classmethod
+    def setUp(cls):
+        cls._acc_dat = [
+            {
+             'account': 'Stocks', 'category': 'Other',
+             'outgoing_date': datetime.datetime(2020, 5, 10, 11, 39, 7),
+             'amount': 5.0,
+             'comment': 'Some comment 1'
+            },
+            {
+             'account': 'Stocks', 'category': 'Other',
+             'outgoing_date': datetime.datetime(2020, 5, 10, 11, 39, 7),
+             'amount': 50.0,
+             'comment': 'Some comment 2'
+            },
+            {
+             'account': 'Stocks', 'category': 'Dividend',
+             'outgoing_date': datetime.datetime(2020, 5, 20, 14, 23, 49),
+             'amount': 3.3, 'comment': 'test'
+            },
+            {
+             'account': 'Household', 'category': 'Dividend',
+             'outgoing_date': datetime.datetime(2020, 5, 5, 14, 26, 25),
+             'amount': 3.31, 'comment': 'test'
+            }]
 
     def test_sum_up_amount(self):
         account = Account()
@@ -14,26 +39,8 @@ class TestAccounting(unittest.TestCase):
                          second=total_amount)
 
     def test_determine_categories_of_account_data(self):
-        acc_dat = [{'account': 'Stocks', 'category': 'Other',
-                    'outgoing_date': datetime.datetime(2020, 5, 10, 11, 39, 7),
-                    'amount': 5.0,
-                    'comment': 'Some comment 1'
-                    },
-                   {'account': 'Stocks', 'category': 'Other',
-                    'outgoing_date': datetime.datetime(2020, 5, 10, 11, 39, 7),
-                    'amount': 50.0,
-                    'comment': 'Some comment 2'
-                    },
-                   {'account': 'Stocks', 'category': 'Dividend',
-                    'outgoing_date': datetime.datetime(2020, 5, 20, 14, 23, 49),
-                    'amount': 3.3, 'comment': 'test'
-                    },
-                   {'account': 'Household', 'category': 'Dividend',
-                    'outgoing_date': datetime.datetime(2020, 5, 5, 14, 26, 25),
-                    'amount': 3.31, 'comment': 'test'
-                    }]
         account = Account()
-        account.accounts_data = acc_dat
+        account.accounts_data = self._acc_dat
         account.determine_categories_of_account_data()
         self.assertTrue(
             {'Dividend', 'Other'}.issuperset(account._categories.category_set))
