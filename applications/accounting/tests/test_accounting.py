@@ -31,6 +31,14 @@ class TestAccounting(unittest.TestCase):
              'amount': 3.31, 'comment': 'test'
             }]
 
+    def test_extract_amounts(self):
+        account = Account()
+        account.amounts = account.extract_amounts(values=self._acc_dat,
+                                                  key='amount')
+        tot_amounts = account.sum_up_amounts()
+        self.assertEqual(first=61.61,
+                         second=tot_amounts)
+
     def test_sum_up_amount(self):
         account = Account()
         account.amounts = [3.351, 8.351, 1.0]
