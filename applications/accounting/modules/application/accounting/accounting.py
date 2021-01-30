@@ -152,6 +152,13 @@ class Account(Accounting):
                                              category['amount'])
             self._categories.amount_per_category.update(category_amount)
 
+    def get_account_amounts(self, acc_type, values):
+        self.amounts = self.extract_amounts(values=values, key='amount')
+        total_amounts = self.sum_up_amounts()
+        logger.debug('balance > total {} amount: {}'.
+                     format(acc_type, total_amounts))
+        return dict(acc_type=acc_type, total_amounts=total_amounts)
+
     def get_amount_sum_per_category(self):
         self.determine_categories_of_account_data()
 
