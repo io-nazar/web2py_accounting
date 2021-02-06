@@ -173,6 +173,7 @@ def balance():
     logger.debug('Generating Account Balance')
     account = Account()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
+
     outgoing = gateway_io.get_outgoing_data()
     tot_acc_amount_out = account.get_account_amounts(acc_type='outgoing',
                                                      values=outgoing)
@@ -180,10 +181,10 @@ def balance():
     incoming = gateway_io.get_incoming_data()
     tot_acc_amount_in = account.get_account_amounts(acc_type='incoming',
                                                     values=incoming)
+
     total_balance = (tot_acc_amount_in['total_amounts'] -
                      tot_acc_amount_out['total_amounts'])
-    total_balance = round(total_balance, 2)
-    account.total_balance = total_balance
+    account.total_balance = round(total_balance, 2)
     logger.debug('balance > total balance: {}'.format(account.total_balance))
 
     return dict(form=dict(balance=total_balance))
