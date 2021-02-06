@@ -144,7 +144,6 @@ class Account(Accounting):
                 if account_data['category'] == category_amount['category']:
                     category_amount['amount'] += account_data['amount']
         logger.debug('[sum_up_catergory_amount]: {}'.format(category_amount))
-        return category_amount
 
     def _update_category_amount(self):
         for category in self._categories.categories_lst:
@@ -168,7 +167,7 @@ class Account(Accounting):
         logger.debug('Created Category / Amount list: {}'.format(
             self._categories.categories_lst))
 
-        category_amount = self._sum_up_catergory_amount()
+        self._sum_up_catergory_amount()
         logger.debug('Sum upped amount per category: {}'.format(
                      self._categories.categories_lst))
 
