@@ -1,3 +1,4 @@
+from gluon import (TABLE, TR, THEAD, TD, B)
 import logging
 logger = logging.getLogger("web2py.app.accounting")
 logger.setLevel(logging.DEBUG)
@@ -22,9 +23,19 @@ class Account(Accounting):
         self._amount = amount
         self._amounts = None
         self._total_balance = total_balance
+        self._balance_per_category = []
         self._comment = comment
         self._accounts_data = list()
         self._categories = Category()
+
+
+    @property
+    def balance_per_category(self):
+        return self._balance_per_category
+
+    @balance_per_category.setter
+    def balance_per_category(self, balance_per_category):
+        self._balance_per_category = balance_per_category
 
     @property
     def account_id(self):
@@ -237,3 +248,20 @@ class AccountIncoming(Account):
 class AccountBalance(Account):
     def __init__(self):
         super(AccountBalance, self).__init__(self)
+
+        self._balance_table_columns = None
+
+    @property
+    def balance_table_columns(self):
+        return self._balance_table_columns
+
+    @balance_table_columns.setter
+    def balance_table_columns(self, balance_table_columns):
+        self._balance_table_columns = balance_table_columns
+
+    def create_balance_table(self):
+        table_keys = THEAD(TR(*[TD(B(k)) for k in self.balance_table_columns]))
+        table_rows = [TR(*[TD(v) for k, v in row.items()])
+                      for row in self.balance_per_category]
+        balance_table = TABLE(table_keys, table_rows, _class='web2py_grid')
+        return balance_table
