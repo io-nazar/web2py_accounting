@@ -5,6 +5,8 @@
     </head>
 <body>
     {{extend 'layout.html'}}
-    <h1>Balance</h1>
-    {{=form}}
+    <h1>Amount Per Category</h1>
+    {{=balance_category_diff}}
+    <h4>Total Balance</h4>
+    {{=XML(total_balance)}}
 </body>
