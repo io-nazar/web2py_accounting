@@ -186,14 +186,6 @@ def balance():
     #START todo move in to modules
     equal_categories = []
     for inc in incoming:
-        if not inc['category'] in equal_categories:
-            account.balance_per_category.append(dict(
-                incoming_amt=inc['amount'],
-                outgoing_amt='',
-                in_out_diff='',
-                category_in=inc['category'],
-                category_out=''))
-
         for out in outgoing:
             if inc['category'] == out['category']:
                 equal_categories.append(inc['category'])
@@ -204,6 +196,15 @@ def balance():
                     in_out_diff=in_out_diff,
                     category_in=inc['category'],
                     category_out=out['category']))
+
+    for inc in incoming:
+        if not inc['category'] in equal_categories:
+            account.balance_per_category.append(dict(
+                incoming_amt=inc['amount'],
+                outgoing_amt='',
+                in_out_diff='',
+                category_in=inc['category'],
+                category_out=''))
 
     for out in outgoing:
         if not out['category'] in equal_categories:
