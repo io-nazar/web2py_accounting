@@ -27,7 +27,24 @@ class Account(Accounting):
         self._comment = comment
         self._accounts_data = list()
         self._categories = Category()
+        self._incoming_data = None
+        self._outgoing_data = None
 
+    @property
+    def incoming_data(self):
+        return self._incoming_data
+
+    @incoming_data.setter
+    def incoming_data(self, incoming_data):
+        self._incoming_data = incoming_data
+
+    @property
+    def outgoing_data(self):
+        return self._outgoing_data
+
+    @outgoing_data.setter
+    def outgoing_data(self, outgoing_data):
+        self._outgoing_data = outgoing_data
 
     @property
     def balance_per_category(self):
@@ -265,3 +282,35 @@ class AccountBalance(Account):
                       for row in self.balance_per_category]
         balance_table = TABLE(table_keys, table_rows, _class='web2py_grid')
         return balance_table
+
+    def get_balance_table_data(self):
+        equal_categories = []
+        for inc in self.incoming_data:
+            for out in self.outgoing_data:
+                if inc['category'] == out['category']:
+                    equal_categories.append(inc['category'])
+                    in_out_diff = inc['amount'] - out['amount']
+                    self.balance_per_category.append(dict(
+                        incoming_amt=inc['amount'],
+                        outgoing_amt=out['amount'],
+                        in_out_diff=in_out_diff,
+                        category_in=inc['category'],
+                        category_out=out['category']))
+
+        for inc in self.incoming_data:
+            if not inc['category'] in equal_categories:
+                self.balance_per_category.append(dict(
+                    incoming_amt=inc['amount'],
+                    outgoing_amt='',
+                    in_out_diff='',
+                    category_in=inc['category'],
+                    category_out=''))
+
+        for out in self.outgoing_data:
+            if not out['category'] in equal_categories:
+                self.balance_per_category.append(dict(
+                    incoming_amt='',
+                    outgoing_amt=out['amount'],
+                    in_out_diff='',
+                    category_in='',
+                    category_out=out['category']))
