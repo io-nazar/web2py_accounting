@@ -268,6 +268,16 @@ class AccountBalance(Account):
 
         self._balance_table_columns = None
 
+        self._equal_categories = None
+
+    @property
+    def equal_categories(self):
+        return  self._equal_categories
+
+    @equal_categories.setter
+    def equal_categories(self, equal_categories):
+        self._equal_categories = equal_categories
+
     @property
     def balance_table_columns(self):
         return self._balance_table_columns
@@ -283,7 +293,7 @@ class AccountBalance(Account):
         balance_table = TABLE(table_keys, table_rows, _class='web2py_grid')
         return balance_table
 
-    def get_balance_table_data(self):
+    def _get_in_out_difference(self):
         equal_categories = []
         for inc in self.incoming_data:
             for out in self.outgoing_data:
@@ -296,9 +306,11 @@ class AccountBalance(Account):
                         in_out_diff=in_out_diff,
                         category_in=inc['category'],
                         category_out=out['category']))
+        self.equal_categories = equal_categories
 
+    def _get_incoming_dat_if_category_not_equal(self):
         for inc in self.incoming_data:
-            if not inc['category'] in equal_categories:
+            if not inc['category'] in self.equal_categories:
                 self.balance_per_category.append(dict(
                     incoming_amt=inc['amount'],
                     outgoing_amt='',
@@ -306,11 +318,18 @@ class AccountBalance(Account):
                     category_in=inc['category'],
                     category_out=''))
 
+    def _get_outgoing_dat_if_category_not_equal(self):
         for out in self.outgoing_data:
-            if not out['category'] in equal_categories:
+            if not out['category'] in self.equal_categories:
                 self.balance_per_category.append(dict(
                     incoming_amt='',
                     outgoing_amt=out['amount'],
                     in_out_diff='',
                     category_in='',
                     category_out=out['category']))
+
+    def get_balance_table_data(self):
+        self._get_in_out_difference()
+        self._get_incoming_dat_if_category_not_equal()
+        self._get_outgoing_dat_if_category_not_equal()
+
