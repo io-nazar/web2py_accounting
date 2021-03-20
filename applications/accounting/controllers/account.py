@@ -171,63 +171,34 @@ def get_data_from_in_out_going_form(account, incoming_outgoing_form):
 @auth.requires_login()
 def balance():
     logger.debug('Generating Account Balance')
-    account = AccountBalance()
+    balance_acc = AccountBalance()
     gateway_io = IOGateway(db=db, user_id=USER_ID)
 
-    outgoing = gateway_io.get_outgoing_data()
-    incoming = gateway_io.get_incoming_data()
-
-    tot_acc_amount_in = account.get_account_amounts(acc_type='incoming',
-                                                    values=incoming)
-    tot_acc_amount_out = account.get_account_amounts(acc_type='outgoing',
-                                                     values=outgoing)
+    balance_acc.outgoing_data = gateway_io.get_outgoing_data()
+    balance_acc.incoming_data = gateway_io.get_incoming_data()
 
 
-    #START todo move in to modules
-    equal_categories = []
-    for inc in incoming:
-        for out in outgoing:
-            if inc['category'] == out['category']:
-                equal_categories.append(inc['category'])
-                in_out_diff = inc['amount'] - out['amount']
-                account.balance_per_category.append(dict(
-                    incoming_amt=inc['amount'],
-                    outgoing_amt=out['amount'],
-                    in_out_diff=in_out_diff,
-                    category_in=inc['category'],
-                    category_out=out['category']))
+    tot_acc_amount_in = balance_acc.get_account_amounts(
+                        acc_type='incoming',
+                        values=balance_acc.incoming_data)
+    tot_acc_amount_out = balance_acc.get_account_amounts(
+                         acc_type='outgoing',
+                         values=balance_acc.outgoing_data)
+    balance_acc.get_balance_table_data()
 
-    for inc in incoming:
-        if not inc['category'] in equal_categories:
-            account.balance_per_category.append(dict(
-                incoming_amt=inc['amount'],
-                outgoing_amt='',
-                in_out_diff='',
-                category_in=inc['category'],
-                category_out=''))
+    balance_acc.balance_table_columns = ['Incoming Amount', 'Outgoing Amount',
+                                        'Difference IN/OUT Amount',
+                                        'Incoming Category',
+                                        'Outgoing Category']
 
-    for out in outgoing:
-        if not out['category'] in equal_categories:
-            account.balance_per_category.append(dict(
-                incoming_amt='',
-                outgoing_amt=out['amount'],
-                in_out_diff='',
-                category_in='',
-                category_out=out['category']))
-    #END
-
-    account.balance_table_columns = ['Incoming Amount', 'Outgoing Amount',
-                                     'Difference IN/OUT Amount',
-                                     'Incoming Category',
-                                     'Outgoing Category']
-    balance_table = account.create_balance_table()
+    balance_table = balance_acc.create_balance_table()
     total_balance = (tot_acc_amount_in['total_amounts'] -
                      tot_acc_amount_out['total_amounts'])
-    account.total_balance = round(total_balance, 2)
-    logger.debug('balance > total balance: {}'.format(account.total_balance))
+    balance_acc.total_balance = round(total_balance, 2)
+    logger.debug('balance > total balance: {}'.format(balance_acc.total_balance))
 
     return dict(balance_category_diff=balance_table,
-                total_balance=account.total_balance)
+                total_balance=balance_acc.total_balance)
 
 
 @auth.requires_login()
