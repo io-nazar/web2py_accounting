@@ -7,8 +7,9 @@ import logging
 
 logger = logging.getLogger('web2py.app.accounting')
 logger.setLevel(logging.DEBUG)
-USER_ID = auth.user.id
 
+if hasattr(auth.user, 'id'):
+    USER_ID = auth.user.id
 
 @auth.requires_login()
 def create_factory_form(ftype=None):
