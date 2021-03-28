@@ -44,8 +44,9 @@ Create simple accounting application for managing incoming and outgoing finances
 # Configuration
 
 # Why this code is published?
-* Author publishes this code purely for educational / exercise purposes
+* Author publishes this code purely for private educational / exercise purposes
 * Author allows viewing and reviewing his code
-* Author forbids any commercial/private use of this code (write your own solution)
+* Author forbids any commercialuse of this code,
+ since this code was published only for private educational / exercise purposes
 
 TODO improve readme file :)
