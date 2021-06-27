@@ -25,7 +25,7 @@ Create simple accounting application for managing incoming and outgoing finances
 * User should be able create his own personalized account.
 * The base structure should consist of incoming, outgoing and balance parts.
 * Incoming: In the incoming part user has possibility to enter and view required data.
-* Outgoing: In the incoming part user has possibility to enter and view required data.
+* Outgoing: In the outgoing part user has possibility to enter and view required data.
 * Balance: In the balance part should view difference of total amount between incoming and outgoing parts.
   balance = SUM(incoming amount) – SUM(outgoing amount)
 * Implement Pie Chart in to Incoming and Outgoing sections
